@@ -1,6 +1,6 @@
 
 (function(){
-  var q=document.getElementById('q'), cards=[].slice.call(document.querySelectorAll('.card')),
+  var q=document.getElementById('q'), cards=[].slice.call(document.querySelectorAll('#grid .card')),
       count=document.getElementById('count'), empty=document.getElementById('empty'),
       sel={brand:null,cat:null};
   function apply(){

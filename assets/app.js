@@ -5,6 +5,8 @@
       sel={brand:null,cat:null};
   function apply(){
     var word=(q.value||'').trim().toLowerCase(), n=0;
+    var usec=document.getElementById('upcoming-sec');
+    if(usec)usec.style.display=(sel.brand||sel.cat||word)?'none':'';
     cards.forEach(function(c){
       var ok=(!sel.brand||c.dataset.brand===sel.brand)&&(!sel.cat||c.dataset.cat===sel.cat)
              &&(!word||c.dataset.search.indexOf(word)>-1);

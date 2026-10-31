@@ -58,7 +58,10 @@ table.spec th{background:var(--panel);width:34%;color:var(--sub);font-weight:600
 .vsel .v-label{font-size:12.5px;font-weight:700;color:var(--sub);margin-bottom:7px;letter-spacing:.05em}
 .vchips{display:flex;flex-wrap:wrap;gap:7px}
 .vchip{border:1.5px solid var(--line);background:var(--panel);border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer;color:var(--txt)}
-.vchip.on{border-color:var(--acc);background:#e8f1fa;font-weight:700}
+.vchip.on{border-color:var(--acc);background:var(--acc);color:#0c1507;font-weight:700}
+.vchip.on::before{content:"✓ "}
+.sel-summary{font-size:13.5px;margin-top:9px;color:var(--txt)}
+.sel-summary b{color:var(--acc)}
 .sel-note{font-size:12px;color:var(--sub);margin-top:2px}
 .rel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:10px}
 h2.sec{font-size:17px;margin:26px 0 10px}

@@ -8,7 +8,7 @@
     var usec=document.getElementById('upcoming-sec');
     if(usec)usec.style.display=(sel.brand||sel.cat||word)?'none':'';
     cards.forEach(function(c){
-      var ok=(!sel.brand||c.dataset.brand===sel.brand)&&(!sel.cat||c.dataset.cat===sel.cat)
+      var ok=(!sel.brand||c.dataset.brand===sel.brand)&&(!sel.cat||(c.dataset.cat||'').split('|').indexOf(sel.cat)>=0)
              &&(!word||c.dataset.search.indexOf(word)>-1);
       c.style.display=ok?'':'none'; if(ok)n++;
     });

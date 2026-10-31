@@ -62,7 +62,7 @@ table.spec th{background:var(--panel);width:34%;color:var(--sub);font-weight:600
 .vchip.on::before{content:"✓ "}
 .sel-summary{font-size:13.5px;margin-top:9px;color:var(--txt)}
 .sel-summary b{color:var(--acc)}
-.cdot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;border:1px solid rgba(255,255,255,.45);vertical-align:-1px}
+.cdot{display:inline-block;width:17px;height:17px;border-radius:50%;margin-right:7px;border:2px solid rgba(255,255,255,.55);vertical-align:-4px;box-shadow:0 0 0 1px rgba(0,0,0,.35)}
 .sel-swatch{display:inline-block;width:15px;height:15px;border-radius:50%;margin-right:7px;border:1px solid rgba(255,255,255,.45);vertical-align:-2px}
 .sel-note{font-size:12px;color:var(--sub);margin-top:2px}
 .rel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:10px}

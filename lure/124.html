@@ -28,6 +28,13 @@ var D={"name": "クリオネックス", "variants": [{"label": "クリオネッ�
     e=document.getElementById('sp-weight'); if(e&&v.weight)e.textContent=v.weight;
     e=document.getElementById('sp-pack'); if(e&&v.pack_count)e.textContent=v.pack_count+'本';
     e=document.getElementById('sp-price'); if(e&&v.price_jpy)e.textContent=yen(v.price_jpy);
+    [['sp-hook','row-hook','hook','hook_src'],['sp-tube','row-tube','tube','tube_src']].forEach(function(cfg){
+      var cell=document.getElementById(cfg[0]), row=document.getElementById(cfg[1]);
+      if(!cell||!row)return;
+      var val=v[cfg[2]];
+      if(val){cell.textContent=val+(v[cfg[3]]==='guide'?'（目安）':'');row.style.display='';}
+      else row.style.display='none';
+    });
     document.querySelectorAll('.shop-btn').forEach(function(a){
       var s=a.dataset.shop;
       if(s==='rakuten')a.href=(vi===D.def&&!color&&D.rakuten_default)?D.rakuten_default:'https://search.rakuten.co.jp/search/mall/'+enc(k)+'/';

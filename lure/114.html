@@ -28,13 +28,27 @@ var D={"name": "オッタークローラー", "variants": [{"label": "オッタ�
     e=document.getElementById('sp-weight'); if(e&&v.weight)e.textContent=v.weight;
     e=document.getElementById('sp-pack'); if(e&&v.pack_count)e.textContent=v.pack_count+'本';
     e=document.getElementById('sp-price'); if(e&&v.price_jpy)e.textContent=yen(v.price_jpy);
-    [['sp-hook','row-hook','hook','hook_src'],['sp-tube','row-tube','tube','tube_src']].forEach(function(cfg){
+    [['sp-tube','row-tube','tube','tube_src']].forEach(function(cfg){
       var cell=document.getElementById(cfg[0]), row=document.getElementById(cfg[1]);
       if(!cell||!row)return;
       var val=v[cfg[2]];
       if(val){cell.textContent=val+(v[cfg[3]]==='guide'?'（目安）':'');row.style.display='';}
       else row.style.display='none';
     });
+    var hb=document.getElementById('hook-box');
+    if(hb){
+      if(v.hook){hb.style.display='';
+        var hk=v.hook.split('〜')[0].split('・')[0].split('／')[0].trim();
+        document.getElementById('hook-name').textContent=v.hook+(v.hook_src==='guide'?'（目安）':'');
+        hb.querySelectorAll('.shop-btn').forEach(function(a){
+          var s=a.dataset.shop, e2=encodeURIComponent(hk);
+          if(s==='hrakuten')a.href='https://search.rakuten.co.jp/search/mall/'+e2+'/';
+          else if(s==='hyahoo')a.href='https://shopping.yahoo.co.jp/search?p='+e2;
+          else if(s==='hamazon')a.href='https://www.amazon.co.jp/s?k='+e2;
+          else if(s==='hmercari')a.href='https://jp.mercari.com/search?keyword='+e2+'&afid='+D.afid;
+        });
+      } else hb.style.display='none';
+    }
     document.querySelectorAll('.shop-btn').forEach(function(a){
       var s=a.dataset.shop;
       if(s==='rakuten')a.href=(vi===D.def&&!color&&D.rakuten_default)?D.rakuten_default:'https://search.rakuten.co.jp/search/mall/'+enc(k)+'/';

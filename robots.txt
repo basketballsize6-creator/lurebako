@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://lurebako.com/sitemap.xml

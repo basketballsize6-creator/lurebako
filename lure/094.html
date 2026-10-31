@@ -35,20 +35,7 @@ var D={"name": "ゴリドラス", "variants": [{"label": "ゴリドラス 12.8g"
       if(val){cell.textContent=val+(v[cfg[3]]==='guide'?'（目安）':'');row.style.display='';}
       else row.style.display='none';
     });
-    var hb=document.getElementById('hook-box');
-    if(hb){
-      if(v.hook){hb.style.display='';
-        var hk=v.hook.split('〜')[0].split('・')[0].split('／')[0].trim();
-        document.getElementById('hook-name').textContent=v.hook+(v.hook_src==='guide'?'（目安）':'');
-        hb.querySelectorAll('.shop-btn').forEach(function(a){
-          var s=a.dataset.shop, e2=encodeURIComponent(hk);
-          if(s==='hrakuten')a.href='https://search.rakuten.co.jp/search/mall/'+e2+'/';
-          else if(s==='hyahoo')a.href='https://shopping.yahoo.co.jp/search?p='+e2;
-          else if(s==='hamazon')a.href='https://www.amazon.co.jp/s?k='+e2;
-          else if(s==='hmercari')a.href='https://jp.mercari.com/search?keyword='+e2+'&afid='+D.afid;
-        });
-      } else hb.style.display='none';
-    }
+    if(window.__hookSet)window.__hookSet(v.hook, v.hook_src);
     document.querySelectorAll('.shop-btn').forEach(function(a){
       var s=a.dataset.shop;
       if(s==='rakuten')a.href=(vi===D.def&&!color&&D.rakuten_default)?D.rakuten_default:'https://search.rakuten.co.jp/search/mall/'+enc(k)+'/';

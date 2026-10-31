@@ -59,6 +59,9 @@ table.spec th{background:var(--panel);width:34%;color:var(--sub);font-weight:600
 .hook-head span{color:var(--txt);font-size:14.5px}
 .shops.mini{margin:10px 0 2px}
 .shop-btn.mini{padding:9px 4px;font-size:12.5px;border-radius:10px}
+.hrow{display:flex;align-items:flex-start;gap:8px;margin-top:9px}
+.hlabel{font-size:12px;color:var(--sub);font-weight:700;padding-top:6px;white-space:nowrap}
+.hook-box .vchip{padding:4px 10px;font-size:12px}
 .vsel{margin:14px 0 2px}
 .vsel .v-label{font-size:12.5px;font-weight:700;color:var(--sub);margin-bottom:7px;letter-spacing:.05em}
 .vchips{display:flex;flex-wrap:wrap;gap:7px}

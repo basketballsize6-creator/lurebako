@@ -60,6 +60,7 @@ table.spec th{background:var(--panel);width:34%;color:var(--sub);font-weight:600
 .hook-tube{font-size:13px;color:var(--sub);margin-top:9px}
 .hook-tube span{color:var(--txt);font-weight:700}
 .hook-info{font-size:13.5px;margin-top:9px;color:var(--txt)}
+a.up-off{display:inline-block;margin-top:8px;color:var(--acc);font-size:13px;font-weight:700;text-decoration:none}
 .hook-head{font-size:13px;font-weight:700;color:var(--sub)}
 .hook-head span{color:var(--txt);font-size:14.5px}
 .shops.mini{margin:10px 0 2px}

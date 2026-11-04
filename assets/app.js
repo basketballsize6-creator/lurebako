@@ -24,4 +24,9 @@
     });
   });
   q.addEventListener('input',apply); apply();
+  var utg=document.getElementById('up-toggle'), umini=document.getElementById('up-mini'), ufull=document.getElementById('up-full');
+  if(utg&&umini&&ufull){utg.addEventListener('click',function(){
+    var open=ufull.hidden; ufull.hidden=!open; umini.style.display=open?'none':'';
+    utg.textContent=open?'コンパクト表示に戻す ▴':'カードで広げる ▾';
+  });}
 })();

@@ -84,6 +84,14 @@ a.up-off{display:inline-block;margin-top:8px;color:var(--acc);font-size:13px;fon
 h2.sec{font-size:17px;margin:26px 0 10px}
 .list-links{display:flex;flex-wrap:wrap;gap:8px}
 .list-links a{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:7px 13px;font-size:13px}
+.up-toggle{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:7px 13px;font-size:13px;color:var(--txt);cursor:pointer;font-family:inherit}
+.up-mini{list-style:none;margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.up-mini li{display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:7px 10px}
+.up-mini .up-thumb{width:54px;height:42px;flex:none;background:#f5f6f3;border-radius:8px;display:grid;place-items:center;overflow:hidden}
+.up-mini .up-thumb img{width:100%;height:100%;object-fit:contain;padding:3px}
+.up-mini .up-thumb.noimg{background:linear-gradient(160deg,#12220f,#0d1710)}
+.up-mini-name{font-size:14px;font-weight:700;line-height:1.35}
+.up-mini-meta{font-size:12px;color:var(--sub)}
 footer{border-top:1px solid var(--line);margin-top:34px}
 .ft-in{max-width:1080px;margin:0 auto;padding:20px 16px 34px;color:var(--sub);font-size:12px}
 .ft-in .f-name{color:var(--txt);font-weight:700;font-size:13px;margin-bottom:8px}

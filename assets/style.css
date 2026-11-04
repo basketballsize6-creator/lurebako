@@ -92,6 +92,7 @@ h2.sec{font-size:17px;margin:26px 0 10px}
 .up-mini .up-thumb.noimg{background:linear-gradient(160deg,#12220f,#0d1710)}
 .up-mini-name{font-size:14px;font-weight:700;line-height:1.35}
 .up-mini-meta{font-size:12px;color:var(--sub)}
+#up-full[hidden]{display:none}
 footer{border-top:1px solid var(--line);margin-top:34px}
 .ft-in{max-width:1080px;margin:0 auto;padding:20px 16px 34px;color:var(--sub);font-size:12px}
 .ft-in .f-name{color:var(--txt);font-weight:700;font-size:13px;margin-bottom:8px}

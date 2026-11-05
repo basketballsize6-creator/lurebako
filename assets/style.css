@@ -97,18 +97,3 @@ footer{border-top:1px solid var(--line);margin-top:34px}
 .ft-in{max-width:1080px;margin:0 auto;padding:20px 16px 34px;color:var(--sub);font-size:12px}
 .ft-in .f-name{color:var(--txt);font-weight:700;font-size:13px;margin-bottom:8px}
 .empty{color:var(--sub);text-align:center;padding:36px 0}
-.art h1{font-size:24px;line-height:1.4;margin-bottom:6px}
-.art-sub{color:var(--sub);font-size:14px}
-.art-date{color:var(--sub);font-size:12px;margin:6px 0 18px}
-.art h2{font-size:18px;margin:26px 0 10px;padding-left:10px;border-left:4px solid var(--acc)}
-.art p{font-size:14.5px;line-height:1.9;margin-bottom:12px}
-.art ol,.art ul{margin:0 0 12px 20px;font-size:14.5px;line-height:1.9}
-.art table{width:100%;border-collapse:collapse;margin:12px 0 16px;font-size:13.5px}
-.art th,.art td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
-.art th{background:var(--panel);white-space:nowrap}
-.art td{background:var(--panel2)}
-.art a{color:var(--acc)}
-.art-card{display:block;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;color:var(--txt);text-decoration:none}
-.art-card-t{font-weight:700;font-size:15px;margin-bottom:6px}
-.art-card-d{color:var(--sub);font-size:13px;line-height:1.7}
-.art-card-m{color:var(--sub);font-size:12px;margin-top:8px}

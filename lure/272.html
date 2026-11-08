@@ -3,7 +3,7 @@
 <title>RVドリフトクロー（ジャッカル）｜ルアバコ</title>
 <meta name="description" content="ノーシンカーリグでのフォール姿勢の安定と沈下速度のコントロールのため、塩含有率の高い高比重素材を下側、低比重素材を上側にした比重の異なる2層構造を採用する。扁平で肉厚なボディがキャストのしやすさとフォールスピードの抑制を">
 <link rel="canonical" href="https://lurebako.com/lure/272.html">
-<link rel="icon" type="image/png" href="/assets/logo.png"><link rel="stylesheet" href="/assets/style.css?v=4e64561d">
+<link rel="icon" type="image/png" href="/assets/logo.png"><link rel="stylesheet" href="/assets/style.css?v=e739c756">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "RVドリフトクロー", "brand": {"@type": "Brand", "name": "ジャッカル"}, "description": "ノーシンカーリグでのフォール姿勢の安定と沈下速度のコントロールのため、塩含有率の高い高比重素材を下側、低比重素材を上側にした比重の異なる2層構造を採用する。扁平で肉厚なボディがキャストのしやすさとフォールスピードの抑制を両立する。逆刺しノーシンカーのバックスライドのほか、フリーリグ、ウェイテッドフック、テキサスリグにも対応する。", "image": "https://lurebako.com/assets/photos/lure-269.jpg", "offers": {"@type": "Offer", "url": "https://lurebako.com/lure/272.html", "priceCurrency": "JPY", "price": 880}}</script></head>
 <body><header class="site"><div class="hd-in"><a class="logo" href="/"><img class="logo-img" src="/assets/logo.png" alt=""><span class="logo-txt">ルア<span>バコ</span></span></a><div class="hd-tag">バス釣りルアー検索・購入カタログ</div></div></header><main>
 <nav class="crumbs"><a href="/">トップ</a> ＞ <a href="/brand/jackall.html">ジャッカル</a> ＞ RVドリフトクロー</nav>
@@ -18,6 +18,7 @@
 (function(){
   var box=document.getElementById('hook-box'); if(!box)return;
   var maker='', gap='', hook="オフセットフック #2/0〜#3/0", src="official", tube="", tsrc="", AFID='3219897968';
+  var tmaker='', ttype='';
   var GAPMAP={'ナローゲイプ':'narrow','レギュラーゲイプ':'regular','ワイドゲイプ':'wide'};
   function isOff(){return hook.indexOf('オフセット')>-1;}
   function kw(){var base=hook.split('〜')[0].split('・')[0].split('／')[0].trim();
@@ -63,7 +64,8 @@
     var tw=document.getElementById('hook-tube');
     if(tw){if(tube){tw.style.display='';document.getElementById('tube-val').textContent=tube+(tsrc==='guide'?'（目安）':'');}else tw.style.display='none';}
     var tm=tube.match(/(\d+(?:\.\d+)?)/);
-    var tk=encodeURIComponent(tm?('ワッキーチューブ '+tm[1]+'mm'):'ワッキーチューブ');
+    var tparts=[]; if(tmaker)tparts.push(tmaker); if(ttype)tparts.push(ttype); tparts.push('ワッキーチューブ'); if(tm)tparts.push(tm[1]+'mm');
+    var tk=encodeURIComponent(tparts.join(' '));
     box.querySelectorAll('.tube-shops .shop-btn').forEach(function(a){
       var s=a.dataset.shop;
       if(s==='trakuten')a.href='https://search.rakuten.co.jp/search/mall/'+tk+'/';
@@ -90,6 +92,8 @@
   }
   bind('hmaker-row','m',function(v){maker=v;});
   bind('hgap-row','g',function(v){gap=v;});
+  bind('ttype-row','tt',function(v){ttype=v;});
+  bind('tmaker-row','tm',function(v){tmaker=v;});
   window.__hookSet=function(h,s,t,ts){hook=h||'';src=s||'';tube=t||'';tsrc=ts||'';
     if(!hook){box.style.display='none';return;}
     box.style.display=''; upd();};

@@ -3,7 +3,7 @@
 <title>フレックスチャンク（ケイテック）｜ルアバコ</title>
 <meta name="description" content="ジグ着底後にスカートがフレアし、少し遅れてトレーラーが倒れ込むポーク特有の余韻アクションをワーム素材で再現。肉厚な2枚のリーフ状テールをフレキシブルに動かすマクラギ構造により、ヘッドの些細な動きにも敏感に反応してしっかり">
 <link rel="canonical" href="https://lurebako.com/lure/469.html">
-<link rel="icon" type="image/png" href="/assets/logo.png"><link rel="stylesheet" href="/assets/style.css?v=4e64561d">
+<link rel="icon" type="image/png" href="/assets/logo.png"><link rel="stylesheet" href="/assets/style.css?v=e739c756">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "フレックスチャンク", "brand": {"@type": "Brand", "name": "ケイテック"}, "description": "ジグ着底後にスカートがフレアし、少し遅れてトレーラーが倒れ込むポーク特有の余韻アクションをワーム素材で再現。肉厚な2枚のリーフ状テールをフレキシブルに動かすマクラギ構造により、ヘッドの些細な動きにも敏感に反応してしっかり水を押す。適度に柔らかい素材に塩を少々加えて比重を若干高くし、ゆっくり倒れ込む動きを実現。天然イカフレーバー配合で乾くこともない。2019年の発売当初はLとMの2サイズだったが、2023年にS・SM・MLが追加され全5サイズとなった。各サイズで素材の硬さ・ソルト割合・ボディ厚を個別に見極めている。", "image": "https://lurebako.com/assets/photos/lure-464.jpg", "offers": {"@type": "Offer", "url": "https://lurebako.com/lure/469.html", "priceCurrency": "JPY", "price": 682}}</script></head>
 <body><header class="site"><div class="hd-in"><a class="logo" href="/"><img class="logo-img" src="/assets/logo.png" alt=""><span class="logo-txt">ルア<span>バコ</span></span></a><div class="hd-tag">バス釣りルアー検索・購入カタログ</div></div></header><main>
 <nav class="crumbs"><a href="/">トップ</a> ＞ <a href="/brand/keitech.html">ケイテック</a> ＞ フレックスチャンク</nav>
@@ -46,6 +46,7 @@ var D={"name": "フレックスチャンク", "variants": [{"hook": "ジグフ�
 (function(){
   var box=document.getElementById('hook-box'); if(!box)return;
   var maker='', gap='', hook="ジグフック #4", src="official", tube="", tsrc="", AFID='3219897968';
+  var tmaker='', ttype='';
   var GAPMAP={'ナローゲイプ':'narrow','レギュラーゲイプ':'regular','ワイドゲイプ':'wide'};
   function isOff(){return hook.indexOf('オフセット')>-1;}
   function kw(){var base=hook.split('〜')[0].split('・')[0].split('／')[0].trim();
@@ -91,7 +92,8 @@ var D={"name": "フレックスチャンク", "variants": [{"hook": "ジグフ�
     var tw=document.getElementById('hook-tube');
     if(tw){if(tube){tw.style.display='';document.getElementById('tube-val').textContent=tube+(tsrc==='guide'?'（目安）':'');}else tw.style.display='none';}
     var tm=tube.match(/(\d+(?:\.\d+)?)/);
-    var tk=encodeURIComponent(tm?('ワッキーチューブ '+tm[1]+'mm'):'ワッキーチューブ');
+    var tparts=[]; if(tmaker)tparts.push(tmaker); if(ttype)tparts.push(ttype); tparts.push('ワッキーチューブ'); if(tm)tparts.push(tm[1]+'mm');
+    var tk=encodeURIComponent(tparts.join(' '));
     box.querySelectorAll('.tube-shops .shop-btn').forEach(function(a){
       var s=a.dataset.shop;
       if(s==='trakuten')a.href='https://search.rakuten.co.jp/search/mall/'+tk+'/';
@@ -118,6 +120,8 @@ var D={"name": "フレックスチャンク", "variants": [{"hook": "ジグフ�
   }
   bind('hmaker-row','m',function(v){maker=v;});
   bind('hgap-row','g',function(v){gap=v;});
+  bind('ttype-row','tt',function(v){ttype=v;});
+  bind('tmaker-row','tm',function(v){tmaker=v;});
   window.__hookSet=function(h,s,t,ts){hook=h||'';src=s||'';tube=t||'';tsrc=ts||'';
     if(!hook){box.style.display='none';return;}
     box.style.display=''; upd();};

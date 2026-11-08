@@ -3,7 +3,7 @@
 <title>D2ホグ（DSTYLE）｜ルアバコ</title>
 <meta name="description" content="ダブルのシャッドテール状ハンドが強い水押しを生み、上部の手やピンテールが微振動する。全身のパーツが連動して動くギミック満載の設計。">
 <link rel="canonical" href="https://lurebako.com/lure/135.html">
-<link rel="icon" type="image/png" href="/assets/logo.png"><link rel="stylesheet" href="/assets/style.css?v=4e64561d">
+<link rel="icon" type="image/png" href="/assets/logo.png"><link rel="stylesheet" href="/assets/style.css?v=e739c756">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "D2ホグ", "brand": {"@type": "Brand", "name": "DSTYLE"}, "description": "ダブルのシャッドテール状ハンドが強い水押しを生み、上部の手やピンテールが微振動する。全身のパーツが連動して動くギミック満載の設計。", "image": "https://thumbnail.image.rakuten.co.jp/@0_mall/casting/cabinet/xm172/4580484758162.jpg?_ex=300x300", "offers": {"@type": "Offer", "url": "https://lurebako.com/lure/135.html", "priceCurrency": "JPY", "price": 847}}</script></head>
 <body><header class="site"><div class="hd-in"><a class="logo" href="/"><img class="logo-img" src="/assets/logo.png" alt=""><span class="logo-txt">ルア<span>バコ</span></span></a><div class="hd-tag">バス釣りルアー検索・購入カタログ</div></div></header><main>
 <nav class="crumbs"><a href="/">トップ</a> ＞ <a href="/brand/dstyle.html">DSTYLE</a> ＞ D2ホグ</nav>
@@ -46,6 +46,7 @@ var D={"name": "D2ホグ", "variants": [{"label": "D2ホグ", "size": "2イン�
 (function(){
   var box=document.getElementById('hook-box'); if(!box)return;
   var maker='', gap='', hook="オフセットフック #4", src="official", tube="", tsrc="", AFID='3219897968';
+  var tmaker='', ttype='';
   var GAPMAP={'ナローゲイプ':'narrow','レギュラーゲイプ':'regular','ワイドゲイプ':'wide'};
   function isOff(){return hook.indexOf('オフセット')>-1;}
   function kw(){var base=hook.split('〜')[0].split('・')[0].split('／')[0].trim();
@@ -91,7 +92,8 @@ var D={"name": "D2ホグ", "variants": [{"label": "D2ホグ", "size": "2イン�
     var tw=document.getElementById('hook-tube');
     if(tw){if(tube){tw.style.display='';document.getElementById('tube-val').textContent=tube+(tsrc==='guide'?'（目安）':'');}else tw.style.display='none';}
     var tm=tube.match(/(\d+(?:\.\d+)?)/);
-    var tk=encodeURIComponent(tm?('ワッキーチューブ '+tm[1]+'mm'):'ワッキーチューブ');
+    var tparts=[]; if(tmaker)tparts.push(tmaker); if(ttype)tparts.push(ttype); tparts.push('ワッキーチューブ'); if(tm)tparts.push(tm[1]+'mm');
+    var tk=encodeURIComponent(tparts.join(' '));
     box.querySelectorAll('.tube-shops .shop-btn').forEach(function(a){
       var s=a.dataset.shop;
       if(s==='trakuten')a.href='https://search.rakuten.co.jp/search/mall/'+tk+'/';
@@ -118,6 +120,8 @@ var D={"name": "D2ホグ", "variants": [{"label": "D2ホグ", "size": "2イン�
   }
   bind('hmaker-row','m',function(v){maker=v;});
   bind('hgap-row','g',function(v){gap=v;});
+  bind('ttype-row','tt',function(v){ttype=v;});
+  bind('tmaker-row','tm',function(v){tmaker=v;});
   window.__hookSet=function(h,s,t,ts){hook=h||'';src=s||'';tube=t||'';tsrc=ts||'';
     if(!hook){box.style.display='none';return;}
     box.style.display=''; upd();};

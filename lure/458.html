@@ -92,7 +92,7 @@ var D={"name": "イージーシェイカー", "variants": [{"hook": null, "hook_
     var tw=document.getElementById('hook-tube');
     if(tw){if(tube){tw.style.display='';document.getElementById('tube-val').textContent=tube+(tsrc==='guide'?'（目安）':'');}else tw.style.display='none';}
     var tm=tube.match(/(\d+(?:\.\d+)?)/);
-    var tparts=[]; if(tmaker)tparts.push(tmaker); if(ttype)tparts.push(ttype); tparts.push('ワッキーチューブ'); if(tm)tparts.push(tm[1]+'mm');
+    var tparts=[]; if(tmaker)tparts.push(tmaker); if(ttype)tparts.push(ttype); tparts.push(tmaker==='G7'?'ワームプロテクトチューブ':'ワッキーチューブ'); if(tm)tparts.push(tm[1]+'mm');
     var tk=encodeURIComponent(tparts.join(' '));
     box.querySelectorAll('.tube-shops .shop-btn').forEach(function(a){
       var s=a.dataset.shop;

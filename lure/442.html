@@ -3,7 +3,7 @@
 <title>スタッガーワイド（ハイドアップ）｜ルアバコ</title>
 <meta name="description" content="扁平なファットボディによる縦方向への強い水押しと、ボディのひねりによるスライドワイドアクションが特徴。ノーシンカー、ジグヘッド、ダウンショット、キャロライナリグ、テキサスリグ、ジカリグ、ジグトレーラーなど幅広いリグに対応">
 <link rel="canonical" href="https://lurebako.com/lure/442.html">
-<link rel="icon" type="image/png" href="/assets/logo.png"><link rel="stylesheet" href="/assets/style.css?v=b42d357f">
+<link rel="icon" type="image/png" href="/assets/logo.png"><link rel="stylesheet" href="/assets/style.css?v=4e64561d">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "スタッガーワイド", "brand": {"@type": "Brand", "name": "ハイドアップ"}, "description": "扁平なファットボディによる縦方向への強い水押しと、ボディのひねりによるスライドワイドアクションが特徴。ノーシンカー、ジグヘッド、ダウンショット、キャロライナリグ、テキサスリグ、ジカリグ、ジグトレーラーなど幅広いリグに対応し、フックセットでは針先をカエシまで抜き出さないことが推奨されている。", "image": "https://lurebako.com/assets/photos/lure-425.jpg", "offers": {"@type": "Offer", "url": "https://lurebako.com/lure/442.html", "priceCurrency": "JPY", "price": 825}}</script></head>
 <body><header class="site"><div class="hd-in"><a class="logo" href="/"><img class="logo-img" src="/assets/logo.png" alt=""><span class="logo-txt">ルア<span>バコ</span></span></a><div class="hd-tag">バス釣りルアー検索・購入カタログ</div></div></header><main>
 <nav class="crumbs"><a href="/">トップ</a> ＞ <a href="/brand/hideup.html">ハイドアップ</a> ＞ スタッガーワイド</nav>
@@ -90,6 +90,15 @@ var D={"name": "スタッガーワイド", "variants": [{"label": "1.2インチ"
     document.getElementById('hgap-row').style.display=isOff()?'':'none';
     var tw=document.getElementById('hook-tube');
     if(tw){if(tube){tw.style.display='';document.getElementById('tube-val').textContent=tube+(tsrc==='guide'?'（目安）':'');}else tw.style.display='none';}
+    var tm=tube.match(/(\d+(?:\.\d+)?)/);
+    var tk=encodeURIComponent(tm?('ワッキーチューブ '+tm[1]+'mm'):'ワッキーチューブ');
+    box.querySelectorAll('.tube-shops .shop-btn').forEach(function(a){
+      var s=a.dataset.shop;
+      if(s==='trakuten')a.href='https://search.rakuten.co.jp/search/mall/'+tk+'/';
+      else if(s==='tyahoo')a.href='https://shopping.yahoo.co.jp/search?p='+tk;
+      else if(s==='tamazon')a.href='https://www.amazon.co.jp/s?k='+tk+'&tag=lurebako-22';
+      else if(s==='tmercari')a.href='https://jp.mercari.com/search?keyword='+tk+'&afid='+AFID;
+    });
     var lk=resolve(); var k=encodeURIComponent(lk||kw());
     box.querySelectorAll('.shop-btn').forEach(function(a){
       var s=a.dataset.shop;

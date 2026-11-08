@@ -3,7 +3,7 @@
 <title>フラッピーフラット（ノリーズ）｜ルアバコ</title>
 <meta name="description" content="フォール中は2枚のパドルがパタパタと動き、視覚と波動でバスの本能を刺激する。ボディ裏側の盛り上がりがフックのズレ防止とフックポイント位置の目安になり、フリーリグやヘビーキャロライナ、リーダーレスダウンショット、ラバージグ">
 <link rel="canonical" href="https://lurebako.com/lure/345.html">
-<link rel="icon" type="image/png" href="/assets/logo.png"><link rel="stylesheet" href="/assets/style.css?v=b42d357f">
+<link rel="icon" type="image/png" href="/assets/logo.png"><link rel="stylesheet" href="/assets/style.css?v=4e64561d">
 </head>
 <body><header class="site"><div class="hd-in"><a class="logo" href="/"><img class="logo-img" src="/assets/logo.png" alt=""><span class="logo-txt">ルア<span>バコ</span></span></a><div class="hd-tag">バス釣りルアー検索・購入カタログ</div></div></header><main>
 <nav class="crumbs"><a href="/">トップ</a> ＞ <a href="/brand/nories.html">ノリーズ</a> ＞ フラッピーフラット</nav>
@@ -90,6 +90,15 @@ var D={"name": "フラッピーフラット", "variants": [{"label": "3.7イン�
     document.getElementById('hgap-row').style.display=isOff()?'':'none';
     var tw=document.getElementById('hook-tube');
     if(tw){if(tube){tw.style.display='';document.getElementById('tube-val').textContent=tube+(tsrc==='guide'?'（目安）':'');}else tw.style.display='none';}
+    var tm=tube.match(/(\d+(?:\.\d+)?)/);
+    var tk=encodeURIComponent(tm?('ワッキーチューブ '+tm[1]+'mm'):'ワッキーチューブ');
+    box.querySelectorAll('.tube-shops .shop-btn').forEach(function(a){
+      var s=a.dataset.shop;
+      if(s==='trakuten')a.href='https://search.rakuten.co.jp/search/mall/'+tk+'/';
+      else if(s==='tyahoo')a.href='https://shopping.yahoo.co.jp/search?p='+tk;
+      else if(s==='tamazon')a.href='https://www.amazon.co.jp/s?k='+tk+'&tag=lurebako-22';
+      else if(s==='tmercari')a.href='https://jp.mercari.com/search?keyword='+tk+'&afid='+AFID;
+    });
     var lk=resolve(); var k=encodeURIComponent(lk||kw());
     box.querySelectorAll('.shop-btn').forEach(function(a){
       var s=a.dataset.shop;

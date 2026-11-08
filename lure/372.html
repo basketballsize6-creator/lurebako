@@ -3,7 +3,7 @@
 <title>BARIKI SHAD（ガンクラフト）｜ルアバコ</title>
 <meta name="description" content="テール上部のバリキアップホールにネイルシンカーを挿入するとテールアクションが強まり、ラトルを入れればサウンドアピールも可能。アピールの強弱を状況に合わせて変えられる。サイズごとに推奨フックが設定されている。">
 <link rel="canonical" href="https://lurebako.com/lure/372.html">
-<link rel="icon" type="image/png" href="/assets/logo.png"><link rel="stylesheet" href="/assets/style.css?v=b42d357f">
+<link rel="icon" type="image/png" href="/assets/logo.png"><link rel="stylesheet" href="/assets/style.css?v=4e64561d">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "BARIKI SHAD", "brand": {"@type": "Brand", "name": "ガンクラフト"}, "description": "テール上部のバリキアップホールにネイルシンカーを挿入するとテールアクションが強まり、ラトルを入れればサウンドアピールも可能。アピールの強弱を状況に合わせて変えられる。サイズごとに推奨フックが設定されている。", "image": "https://lurebako.com/assets/photos/lure-362.jpg", "offers": {"@type": "Offer", "url": "https://lurebako.com/lure/372.html", "priceCurrency": "JPY", "price": 1029}}</script></head>
 <body><header class="site"><div class="hd-in"><a class="logo" href="/"><img class="logo-img" src="/assets/logo.png" alt=""><span class="logo-txt">ルア<span>バコ</span></span></a><div class="hd-tag">バス釣りルアー検索・購入カタログ</div></div></header><main>
 <nav class="crumbs"><a href="/">トップ</a> ＞ <a href="/brand/gancraft.html">ガンクラフト</a> ＞ BARIKI SHAD</nav>
@@ -90,6 +90,15 @@ var D={"name": "BARIKI SHAD", "variants": [{"label": "3.8inch", "pack_count": nu
     document.getElementById('hgap-row').style.display=isOff()?'':'none';
     var tw=document.getElementById('hook-tube');
     if(tw){if(tube){tw.style.display='';document.getElementById('tube-val').textContent=tube+(tsrc==='guide'?'（目安）':'');}else tw.style.display='none';}
+    var tm=tube.match(/(\d+(?:\.\d+)?)/);
+    var tk=encodeURIComponent(tm?('ワッキーチューブ '+tm[1]+'mm'):'ワッキーチューブ');
+    box.querySelectorAll('.tube-shops .shop-btn').forEach(function(a){
+      var s=a.dataset.shop;
+      if(s==='trakuten')a.href='https://search.rakuten.co.jp/search/mall/'+tk+'/';
+      else if(s==='tyahoo')a.href='https://shopping.yahoo.co.jp/search?p='+tk;
+      else if(s==='tamazon')a.href='https://www.amazon.co.jp/s?k='+tk+'&tag=lurebako-22';
+      else if(s==='tmercari')a.href='https://jp.mercari.com/search?keyword='+tk+'&afid='+AFID;
+    });
     var lk=resolve(); var k=encodeURIComponent(lk||kw());
     box.querySelectorAll('.shop-btn').forEach(function(a){
       var s=a.dataset.shop;

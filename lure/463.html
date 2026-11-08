@@ -3,7 +3,7 @@
 <title>クレイジーフラッパー（ケイテック）｜ルアバコ</title>
 <meta name="description" content="高い効率で水をつかみ、つかんだ水をよどみなくアクションに変換する設計で、1/8oz以下の軽いシンカーでも極めて高いレスポンスを発揮する。サイズに不釣り合いなほど硬いプラスチックを使い、塩は腹部のみに入れて低重心化。着底時">
 <link rel="canonical" href="https://lurebako.com/lure/463.html">
-<link rel="icon" type="image/png" href="/assets/logo.png"><link rel="stylesheet" href="/assets/style.css?v=b42d357f">
+<link rel="icon" type="image/png" href="/assets/logo.png"><link rel="stylesheet" href="/assets/style.css?v=4e64561d">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "クレイジーフラッパー", "brand": {"@type": "Brand", "name": "ケイテック"}, "description": "高い効率で水をつかみ、つかんだ水をよどみなくアクションに変換する設計で、1/8oz以下の軽いシンカーでも極めて高いレスポンスを発揮する。サイズに不釣り合いなほど硬いプラスチックを使い、塩は腹部のみに入れて低重心化。着底時の横倒れを防ぐサイドフラップやスリ抜けのための尾部突起など、使いやすさと釣果に焦点を当てて設計されている。出荷時は触角とウデがくっついたファクトリーロック状態で、使用時に外して使う。全カラーにイカフレーバーを大量添加。", "image": "https://lurebako.com/assets/photos/lure-458.jpg", "offers": {"@type": "Offer", "url": "https://lurebako.com/lure/463.html", "priceCurrency": "JPY", "price": 902}}</script></head>
 <body><header class="site"><div class="hd-in"><a class="logo" href="/"><img class="logo-img" src="/assets/logo.png" alt=""><span class="logo-txt">ルア<span>バコ</span></span></a><div class="hd-tag">バス釣りルアー検索・購入カタログ</div></div></header><main>
 <nav class="crumbs"><a href="/">トップ</a> ＞ <a href="/brand/keitech.html">ケイテック</a> ＞ クレイジーフラッパー</nav>
@@ -90,6 +90,15 @@ var D={"name": "クレイジーフラッパー", "variants": [{"hook": "オフ�
     document.getElementById('hgap-row').style.display=isOff()?'':'none';
     var tw=document.getElementById('hook-tube');
     if(tw){if(tube){tw.style.display='';document.getElementById('tube-val').textContent=tube+(tsrc==='guide'?'（目安）':'');}else tw.style.display='none';}
+    var tm=tube.match(/(\d+(?:\.\d+)?)/);
+    var tk=encodeURIComponent(tm?('ワッキーチューブ '+tm[1]+'mm'):'ワッキーチューブ');
+    box.querySelectorAll('.tube-shops .shop-btn').forEach(function(a){
+      var s=a.dataset.shop;
+      if(s==='trakuten')a.href='https://search.rakuten.co.jp/search/mall/'+tk+'/';
+      else if(s==='tyahoo')a.href='https://shopping.yahoo.co.jp/search?p='+tk;
+      else if(s==='tamazon')a.href='https://www.amazon.co.jp/s?k='+tk+'&tag=lurebako-22';
+      else if(s==='tmercari')a.href='https://jp.mercari.com/search?keyword='+tk+'&afid='+AFID;
+    });
     var lk=resolve(); var k=encodeURIComponent(lk||kw());
     box.querySelectorAll('.shop-btn').forEach(function(a){
       var s=a.dataset.shop;

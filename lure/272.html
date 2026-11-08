@@ -3,7 +3,7 @@
 <title>RVドリフトクロー（ジャッカル）｜ルアバコ</title>
 <meta name="description" content="ノーシンカーリグでのフォール姿勢の安定と沈下速度のコントロールのため、塩含有率の高い高比重素材を下側、低比重素材を上側にした比重の異なる2層構造を採用する。扁平で肉厚なボディがキャストのしやすさとフォールスピードの抑制を">
 <link rel="canonical" href="https://lurebako.com/lure/272.html">
-<link rel="icon" type="image/png" href="/assets/logo.png"><link rel="stylesheet" href="/assets/style.css?v=b42d357f">
+<link rel="icon" type="image/png" href="/assets/logo.png"><link rel="stylesheet" href="/assets/style.css?v=4e64561d">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "RVドリフトクロー", "brand": {"@type": "Brand", "name": "ジャッカル"}, "description": "ノーシンカーリグでのフォール姿勢の安定と沈下速度のコントロールのため、塩含有率の高い高比重素材を下側、低比重素材を上側にした比重の異なる2層構造を採用する。扁平で肉厚なボディがキャストのしやすさとフォールスピードの抑制を両立する。逆刺しノーシンカーのバックスライドのほか、フリーリグ、ウェイテッドフック、テキサスリグにも対応する。", "image": "https://lurebako.com/assets/photos/lure-269.jpg", "offers": {"@type": "Offer", "url": "https://lurebako.com/lure/272.html", "priceCurrency": "JPY", "price": 880}}</script></head>
 <body><header class="site"><div class="hd-in"><a class="logo" href="/"><img class="logo-img" src="/assets/logo.png" alt=""><span class="logo-txt">ルア<span>バコ</span></span></a><div class="hd-tag">バス釣りルアー検索・購入カタログ</div></div></header><main>
 <nav class="crumbs"><a href="/">トップ</a> ＞ <a href="/brand/jackall.html">ジャッカル</a> ＞ RVドリフトクロー</nav>
@@ -62,6 +62,15 @@
     document.getElementById('hgap-row').style.display=isOff()?'':'none';
     var tw=document.getElementById('hook-tube');
     if(tw){if(tube){tw.style.display='';document.getElementById('tube-val').textContent=tube+(tsrc==='guide'?'（目安）':'');}else tw.style.display='none';}
+    var tm=tube.match(/(\d+(?:\.\d+)?)/);
+    var tk=encodeURIComponent(tm?('ワッキーチューブ '+tm[1]+'mm'):'ワッキーチューブ');
+    box.querySelectorAll('.tube-shops .shop-btn').forEach(function(a){
+      var s=a.dataset.shop;
+      if(s==='trakuten')a.href='https://search.rakuten.co.jp/search/mall/'+tk+'/';
+      else if(s==='tyahoo')a.href='https://shopping.yahoo.co.jp/search?p='+tk;
+      else if(s==='tamazon')a.href='https://www.amazon.co.jp/s?k='+tk+'&tag=lurebako-22';
+      else if(s==='tmercari')a.href='https://jp.mercari.com/search?keyword='+tk+'&afid='+AFID;
+    });
     var lk=resolve(); var k=encodeURIComponent(lk||kw());
     box.querySelectorAll('.shop-btn').forEach(function(a){
       var s=a.dataset.shop;

@@ -46,7 +46,7 @@ var D={"name": "グライドカマロン", "variants": [{"hook": "オフセッ�
 (function(){
   var box=document.getElementById('hook-box'); if(!box)return;
   var maker='', gap='', hook="オフセットフック #3/0", src="official", tube="", tsrc="", AFID='3219897968';
-  var tmaker='', ttype='';
+  var tmaker='', ttype='', tvh='';
   var GAPMAP={'ナローゲイプ':'narrow','レギュラーゲイプ':'regular','ワイドゲイプ':'wide'};
   function isOff(){return hook.indexOf('オフセット')>-1;}
   function kw(){var base=hook.split('〜')[0].split('・')[0].split('／')[0].trim();
@@ -92,7 +92,10 @@ var D={"name": "グライドカマロン", "variants": [{"hook": "オフセッ�
     var tw=document.getElementById('hook-tube');
     if(tw){if(tube){tw.style.display='';document.getElementById('tube-val').textContent=tube+(tsrc==='guide'?'（目安）':'');}else tw.style.display='none';}
     var tm=tube.match(/(\d+(?:\.\d+)?)/);
-    var tparts=[]; if(tmaker)tparts.push(tmaker); if(ttype)tparts.push(ttype); tparts.push({'G7':'ワームプロテクトチューブ','バレーヒル':'ワームセイバーチューブ'}[tmaker]||'ワッキーチューブ'); if(tm)tparts.push(tm[1]+'mm');
+    var vr=document.getElementById('tvh-row'); if(vr){if(tmaker==='バレーヒル'){vr.style.display='';}else{vr.style.display='none'; if(tvh){tvh=''; vr.querySelectorAll('.vchip').forEach(function(x){x.classList.remove('on');});}}}
+    var tbase={'G7':'ワームプロテクトチューブ','バレーヒル':'ワームセイバーチューブ','ダイワ':'バザーズワームチューブ','デコイ':'ワームホルダー チューブタイプ'}[tmaker]||'ワッキーチューブ';
+    if(tmaker==='バレーヒル'&&tvh&&tvh!=='通常')tbase+=' '+tvh;
+    var tparts=[]; if(tmaker)tparts.push(tmaker); if(ttype)tparts.push(ttype); tparts.push(tbase); if(tm)tparts.push(tm[1]+'mm');
     var tk=encodeURIComponent(tparts.join(' '));
     box.querySelectorAll('.tube-shops .shop-btn').forEach(function(a){
       var s=a.dataset.shop;
@@ -122,6 +125,7 @@ var D={"name": "グライドカマロン", "variants": [{"hook": "オフセッ�
   bind('hgap-row','g',function(v){gap=v;});
   bind('ttype-row','tt',function(v){ttype=v;});
   bind('tmaker-row','tm',function(v){tmaker=v;});
+  bind('tvh-row','tv',function(v){tvh=v;});
   window.__hookSet=function(h,s,t,ts){hook=h||'';src=s||'';tube=t||'';tsrc=ts||'';
     if(!hook){box.style.display='none';return;}
     box.style.display=''; upd();};

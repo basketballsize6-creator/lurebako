@@ -43,7 +43,7 @@ var D={"name": "newスライドスイマー300", "variants": [{"label": "newス�
   var cc=document.getElementById('cchips');
   if(cc)cc.addEventListener('click',function(ev){var b=ev.target.closest('.vchip');if(!b)return;var on=b.classList.contains('on');cc.querySelectorAll('.vchip').forEach(function(x){x.classList.remove('on');});color=on?null:b.dataset.c;if(!on)b.classList.add('on');upd();});
 })();
-</script><script src="/assets/rods_match.js?v=c475d59c"></script><script>
+</script><script src="/assets/rods_match.js?v=c35d8033"></script><script>
 var LW={"name": "newスライドスイマー300", "cat": "スイムベイト・ビッグベイト"};
 (function(){
   var RCAP=30, glabels={};
@@ -64,7 +64,7 @@ var LW={"name": "newスライドスイマー300", "cat": "スイムベイト・�
       glabels[i]=sn+'（'+items.length+'件）';
       var lis=items.slice(0,RCAP).map(function(e){
         var r=e.r;
-        return '<li><a href="'+r.url+'"><span class="up-thumb noimg"></span><span><span class="up-mini-name">'+escT(r.name)+(e.hit?'<span class="rec-tag">おすすめ</span>':'')+'</span><br><span class="up-mini-meta">'+escT(r.brand)+'</span></span></a></li>';
+        return '<li><a href="'+r.url+'"><span class="up-thumb'+(r.photo?'':' noimg')+'">'+(r.photo?'<img src="'+r.photo+'" alt="" loading="lazy">':'')+'</span><span><span class="up-mini-name">'+escT(r.name)+(e.hit?'<span class="rec-tag">おすすめ</span>':'')+'</span><br><span class="up-mini-meta">'+escT(r.brand)+'</span></span></a></li>';
       }).join('');
       var more=items.length>RCAP?'<p class="sec-note">（'+RCAP+'件まで表示）</p>':'';
       return '<div class="mg-group"><button type="button" class="up-toggle mg-toggle" data-g="'+i+'">'+escT(glabels[i])+' ▾</button><div id="rg-wrap-'+i+'" hidden><ul class="up-mini">'+lis+'</ul>'+more+'</div></div>';

@@ -84,6 +84,7 @@ a.up-off{display:inline-block;margin-top:8px;color:var(--acc);font-size:13px;fon
 .vchips{display:flex;flex-wrap:wrap;gap:7px}
 .rm-group + .rm-group{margin-top:12px}
 .mg-group{margin-top:10px}
+.rec-tag{display:inline-block;background:var(--acc);color:#0b120c;font-size:10px;font-weight:700;border-radius:4px;padding:1px 5px;margin-left:6px;vertical-align:2px}
 .vchip{border:1.5px solid var(--line);background:var(--panel);border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer;color:var(--txt)}
 .vchip.on{border-color:var(--acc);background:var(--acc);color:#0c1507;font-weight:700}
 .vchip.on::before{content:"✓ "}

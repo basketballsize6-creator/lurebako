@@ -13,6 +13,11 @@ main{max-width:1080px;margin:0 auto;padding:18px 16px 40px}
 .hero{padding:22px 4px 8px}
 .hero h1{font-size:26px;line-height:1.35}
 .hero p{color:var(--sub);font-size:14px;margin-top:8px;max-width:640px}
+.pick{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0 2px}
+.pick-card{display:block;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 16px}
+.pick-card .pk-t{font-size:19px;font-weight:800}
+.pick-card .pk-t span{color:var(--acc);font-size:15px;margin-left:4px}
+.pick-card .pk-s{color:var(--sub);font-size:12.5px;margin-top:3px}
 .search{margin:18px 0 6px}
 .search input{width:100%;padding:13px 16px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--txt);font-size:16px}
 .filters{margin:12px 0}

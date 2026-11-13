@@ -83,6 +83,7 @@ a.up-off{display:inline-block;margin-top:8px;color:var(--acc);font-size:13px;fon
 .vsel .v-label{font-size:12.5px;font-weight:700;color:var(--sub);margin-bottom:7px;letter-spacing:.05em}
 .vchips{display:flex;flex-wrap:wrap;gap:7px}
 .rm-group + .rm-group{margin-top:12px}
+.mg-group{margin-top:10px}
 .vchip{border:1.5px solid var(--line);background:var(--panel);border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer;color:var(--txt)}
 .vchip.on{border-color:var(--acc);background:var(--acc);color:#0c1507;font-weight:700}
 .vchip.on::before{content:"✓ "}

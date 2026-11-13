@@ -19,6 +19,8 @@ main{max-width:1080px;margin:0 auto;padding:18px 16px 40px}
 .pick.pick5{grid-template-columns:repeat(5,1fr)}
 @media(max-width:900px){.pick.pick5{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:640px){.pick.pick5{grid-template-columns:1fr 1fr}.pick.pick5 .pick-card:last-child{grid-column:1/-1}}
+.acc-kind{margin:14px 0 2px}
+.acc-kind .chip{font-size:15px;font-weight:700;padding:9px 22px}
 .pick-card{display:block;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 16px}
 .pick-card .pk-e{font-size:32px;line-height:1;margin-bottom:8px}
 .pick-card .pk-e .pk-img{height:36px;width:auto;display:block}

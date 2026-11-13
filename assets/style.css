@@ -15,6 +15,7 @@ main{max-width:1080px;margin:0 auto;padding:18px 16px 40px}
 .hero p{color:var(--sub);font-size:14px;margin-top:8px;max-width:640px}
 .pick{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0 2px}
 .pick-card{display:block;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 16px}
+.pick-card .pk-e{font-size:32px;line-height:1;margin-bottom:8px}
 .pick-card .pk-t{font-size:19px;font-weight:800}
 .pick-card .pk-t span{color:var(--acc);font-size:15px;margin-left:4px}
 .pick-card .pk-s{color:var(--sub);font-size:12.5px;margin-top:3px}

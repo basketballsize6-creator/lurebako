@@ -29,6 +29,9 @@ main{max-width:1080px;margin:0 auto;padding:18px 16px 40px}
 .pick-card .pk-s{color:var(--sub);font-size:12.5px;margin-top:3px}
 .search{margin:18px 0 6px}
 .search input{width:100%;padding:13px 16px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--txt);font-size:16px}
+form.search{display:flex;gap:8px}
+form.search input{flex:1;width:auto}
+.search-btn{padding:0 22px;border-radius:12px;border:1px solid var(--acc);background:var(--acc);color:#0c1507;font-size:15px;font-weight:700;cursor:pointer;white-space:nowrap}
 .filters{margin:12px 0}
 .filter-label{font-size:12px;color:var(--sub);margin:10px 0 6px}
 .chips{display:flex;flex-wrap:wrap;gap:8px}

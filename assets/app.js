@@ -15,7 +15,7 @@
     });
     count.textContent='全'+n+'件';
     var extraHits=0;
-    [['rod-results','rod-grid','rod-count'],['reel-results','reel-grid','reel-count']].forEach(function(t){
+    [['rod-results','rod-grid','rod-count'],['reel-results','reel-grid','reel-count'],['acc-results','acc-grid','acc-count']].forEach(function(t){
       var sec=document.getElementById(t[0]); if(!sec)return;
       var hits=0;
       if(words.length){

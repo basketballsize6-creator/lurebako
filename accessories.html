@@ -32,7 +32,7 @@
       });
       var sec=document.getElementById('sec-'+g), fg=document.getElementById('fg-'+g);
       if(sec)sec.hidden=!(kindOk&&n>0);
-      if(fg)fg.hidden=!kindOk;
+      if(fg)fg.hidden=(kind!==g);
       var cnt=document.getElementById('cnt-'+g); if(cnt)cnt.textContent=n+'\u4ef6';
       if(kindOk)total+=n;
     });
@@ -52,6 +52,7 @@
   kc.forEach(function(ch){
     ch.addEventListener('click',function(){
       kind=ch.dataset.kindSel;
+      sel={}; document.querySelectorAll('.chip[data-g]').forEach(function(x){x.classList.remove('on');});
       kc.forEach(function(x){x.classList.toggle('on',x===ch);});
       try{history.replaceState(null,'',kind==='all'?location.pathname:'#'+kind);}catch(e){}
       apply();

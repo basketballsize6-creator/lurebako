@@ -29,7 +29,7 @@ main{max-width:1080px;margin:0 auto;padding:18px 16px 40px}
 .pick-card .pk-s{color:var(--sub);font-size:12.5px;margin-top:3px}
 .search{margin:18px 0 6px}
 .search input{width:100%;padding:13px 16px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--txt);font-size:16px}
-.to-top{position:fixed;right:16px;bottom:20px;z-index:60;background:var(--acc);color:#0c1507;border:none;border-radius:999px;padding:11px 18px;font-size:14px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .25s;cursor:pointer}
+.to-top{position:fixed;right:16px;bottom:20px;z-index:60;background:var(--acc);color:#0c1507;border:none;border-radius:999px;padding:11px 18px;font-size:14px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .25s;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .to-top.show{opacity:1;pointer-events:auto}
 form.search{display:flex;gap:8px}
 form.search input{flex:1;width:auto}

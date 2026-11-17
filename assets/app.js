@@ -36,6 +36,9 @@
     apply();
     count.scrollIntoView({behavior:'smooth',block:'start'});
   });
+  q.addEventListener('input',function(){
+    if(!(q.value||'').trim()&&words.length){ words=[]; apply(); }
+  });
   document.querySelectorAll('.chip').forEach(function(ch){
     ch.addEventListener('click',function(){
       var t=ch.dataset.type;

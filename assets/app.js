@@ -1,18 +1,26 @@
 
 (function(){
-  var cards=[].slice.call(document.querySelectorAll('#grid .card')),
+  var q=document.getElementById('q'), form=document.getElementById('lures'),
+      cards=[].slice.call(document.querySelectorAll('#grid .card')),
       count=document.getElementById('count'), empty=document.getElementById('empty'),
-      sel={brand:null,cat:null};
+      sel={brand:null,cat:null}, words=[];
   function apply(){
     var n=0;
     var usec=document.getElementById('upcoming-sec');
-    if(usec)usec.style.display=(sel.brand||sel.cat)?'none':'';
+    if(usec)usec.style.display=(sel.brand||sel.cat||words.length)?'none':'';
     cards.forEach(function(c){
-      var ok=(!sel.brand||c.dataset.brand===sel.brand)&&(!sel.cat||(c.dataset.cat||'').split('|').indexOf(sel.cat)>=0);
+      var ok=(!sel.brand||c.dataset.brand===sel.brand)&&(!sel.cat||(c.dataset.cat||'').split('|').indexOf(sel.cat)>=0)
+             &&words.every(function(w){return c.dataset.search.indexOf(w)>-1;});
       c.style.display=ok?'':'none'; if(ok)n++;
     });
     count.textContent='全'+n+'件'; empty.hidden=n>0;
   }
+  if(form)form.addEventListener('submit',function(e){
+    e.preventDefault();
+    words=(q.value||'').trim().toLowerCase().split(/\s+/).filter(Boolean);
+    apply();
+    count.scrollIntoView({behavior:'smooth',block:'start'});
+  });
   document.querySelectorAll('.chip').forEach(function(ch){
     ch.addEventListener('click',function(){
       var t=ch.dataset.type;

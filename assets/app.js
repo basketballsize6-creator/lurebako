@@ -13,7 +13,22 @@
              &&words.every(function(w){return c.dataset.search.indexOf(w)>-1;});
       c.style.display=ok?'':'none'; if(ok)n++;
     });
-    count.textContent='全'+n+'件'; empty.hidden=n>0;
+    count.textContent='全'+n+'件';
+    var extraHits=0;
+    [['rod-results','rod-grid','rod-count'],['reel-results','reel-grid','reel-count']].forEach(function(t){
+      var sec=document.getElementById(t[0]); if(!sec)return;
+      var hits=0;
+      if(words.length){
+        [].slice.call(document.querySelectorAll('#'+t[1]+' .card')).forEach(function(c){
+          var ok=words.every(function(w){return c.dataset.search.indexOf(w)>-1;});
+          c.style.display=ok?'':'none'; if(ok)hits++;
+        });
+      }
+      sec.hidden=!(words.length&&hits>0);
+      var cnt=document.getElementById(t[2]); if(cnt)cnt.textContent=hits;
+      extraHits+=hits;
+    });
+    empty.hidden=(n>0||extraHits>0);
   }
   if(form)form.addEventListener('submit',function(e){
     e.preventDefault();

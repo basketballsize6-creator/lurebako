@@ -20,7 +20,13 @@ var D={"name": "ナギサ 65SP", "variants": [{"label": "NAGISA 65SP", "size": "
 (function(){
   var vi=D.def, color=null;
   function enc(s){return encodeURIComponent(s);}
-  function kw(){var v=D.variants[vi]||{};var base=(v.label||D.name);return color?base+' '+color:base;}
+  function kw(){var v=D.variants[vi]||{};var lab=v.label||'';var base;
+    if(!lab||lab.indexOf(D.name)>=0)base=lab||D.name;
+    else if(/[぀-ヿ一-鿿]/.test(lab))base=lab;
+    else if(/[A-Za-z]{3,}/.test(lab)&&lab.indexOf(' ')>=0)base=lab;
+    else if(D.name.slice(-lab.length)===lab)base=D.name;
+    else base=D.name+' '+lab;
+    return color?base+' '+color:base;}
   function yen(n){return '\u00a5'+Number(n).toLocaleString('ja-JP');}
   function upd(){
     var v=D.variants[vi]||{}, k=kw(), e;

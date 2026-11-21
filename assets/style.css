@@ -126,3 +126,28 @@ footer{border-top:1px solid var(--line);margin-top:34px}
 .sec-note{font-size:12px;color:var(--sub);margin-top:6px}
 .up-mini a{display:flex;align-items:center;gap:10px;width:100%}
 .up-mini .up-thumb img{width:100%;height:100%;object-fit:contain;padding:3px}
+.vote-box{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.vote-btns{display:flex;flex-wrap:wrap;gap:8px}
+.vote-btn{border:1.5px solid var(--line);background:var(--panel2);border-radius:999px;padding:8px 14px;font-size:14px;font-weight:700;cursor:pointer;color:var(--txt);font-family:inherit}
+.vote-btn .vc{display:inline-block;margin-left:7px;background:var(--line);color:var(--txt);border-radius:999px;padding:1px 8px;font-size:12.5px;font-weight:700}
+.vote-btn.on{background:var(--acc);border-color:var(--acc);color:#0c1507}
+.vote-btn.on .vc{background:rgba(12,21,7,.22);color:#0c1507}
+.vote-btn:disabled{opacity:.55;cursor:wait}
+.vote-total{font-size:14px;margin-top:12px}
+.vote-total b{color:var(--acc);font-size:16px}
+.vote-box a{color:var(--acc)}
+.rank-link-wrap{margin:14px 0 4px}
+a.rank-link{display:block;text-align:center;border:1px solid var(--acc);color:var(--acc);border-radius:12px;padding:12px;font-size:15px;font-weight:700;text-decoration:none;background:var(--panel)}
+.rank-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 6px}
+.rank-list{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.rank-row{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:9px 12px;text-decoration:none;color:var(--txt)}
+.rank-no{font-size:17px;font-weight:800;color:var(--acc);min-width:30px;text-align:center}
+.rank-thumb{width:64px;height:48px;flex:none;background:#f5f6f3;border-radius:8px;display:grid;place-items:center;overflow:hidden}
+.rank-thumb img{width:100%;height:100%;object-fit:contain;padding:3px}
+.rank-thumb.noimg{background:linear-gradient(160deg,#12220f,#0d1710)}
+.rank-main{flex:1;min-width:0}
+.rank-name{font-size:14.5px;font-weight:700;line-height:1.35}
+.rank-brand{font-size:11px;color:var(--acc)}
+.rank-break{font-size:12px;color:var(--sub)}
+.rank-total{font-size:15px;font-weight:800;color:var(--acc);white-space:nowrap;text-align:right}
+.rank-total small{display:block;font-size:10.5px;color:var(--sub);font-weight:400}

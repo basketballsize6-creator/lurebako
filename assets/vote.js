@@ -137,6 +137,19 @@ if (myList) {
   var MLABELS = {s60:'60アップ', s50:'50アップ', s40:'40アップ', sLow:'それ以下'};
   var MRANK = {s60:0, s50:1, s40:2, sLow:3};
   var MLSKEY = 'lb_votes';
+  var curFilter = 'all';
+  function syncFilterChips(){
+    document.querySelectorAll('.my-filter').forEach(function(c){
+      c.classList.toggle('on', c.getAttribute('data-filter') === curFilter);
+    });
+  }
+  document.querySelectorAll('.my-filter').forEach(function(c){
+    c.addEventListener('click', function(){
+      var f = c.getAttribute('data-filter');
+      curFilter = (f === 'all' || curFilter === f) ? 'all' : f;
+      renderMine();
+    });
+  });
   function myRead(){
     try { return JSON.parse(localStorage.getItem(MLSKEY) || '{}'); } catch(e){ return {}; }
   }
@@ -153,8 +166,14 @@ if (myList) {
       rows.push({id: id, meta: meta, arr: arr, best: best});
     });
     var sum = document.getElementById('my-summary');
+    var filtersEl = document.getElementById('my-filters');
+    var countEl = document.getElementById('my-count');
     if (!rows.length) {
       if (sum) sum.innerHTML = '';
+      if (filtersEl) filtersEl.hidden = true;
+      if (countEl) countEl.textContent = '';
+      curFilter = 'all';
+      syncFilterChips();
       myList.innerHTML = '<p class="empty">まだチェックしたルアーがありません。各ルアーのページの「このルアーで釣れたらチェック！」から、釣れたサイズをチェックしてみてください。<br><a href="/lures.html">ルアー一覧を見る ▸</a></p>';
       return;
     }
@@ -162,7 +181,15 @@ if (myList) {
     var per = {s60:0, s50:0, s40:0, sLow:0};
     rows.forEach(function(r){ r.arr.forEach(function(f){ per[f]++; }); });
     if (sum) sum.innerHTML = 'チェックしたルアー <b>' + rows.length + '</b> 件（60アップ <b>' + per.s60 + '</b> 件 ・ 50アップ <b>' + per.s50 + '</b> 件 ・ 40アップ <b>' + per.s40 + '</b> 件 ・ それ以下 <b>' + per.sLow + '</b> 件）';
-    myList.innerHTML = rows.map(function(r){
+    if (filtersEl) filtersEl.hidden = false;
+    syncFilterChips();
+    var view = (curFilter === 'all') ? rows : rows.filter(function(r){ return r.arr.indexOf(curFilter) >= 0; });
+    if (countEl) countEl.textContent = (curFilter === 'all') ? '' : '「' + MLABELS[curFilter] + '」のチェックがあるルアー ' + view.length + ' 件を表示中';
+    if (!view.length) {
+      myList.innerHTML = '<p class="empty">このサイズでチェックしたルアーはありません。</p>';
+      return;
+    }
+    myList.innerHTML = view.map(function(r){
       var m = r.meta;
       var thumb = m.photo
         ? '<span class="rank-thumb"><img src="' + m.photo + '" alt="" loading="lazy"></span>'

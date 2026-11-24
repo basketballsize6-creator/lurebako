@@ -78,14 +78,17 @@
       .game-wrap .stage {
         position: relative; border-radius: 16px; overflow: hidden;
         background: var(--stage-bg);
+        container-type: inline-size; /* タイトル文字をステージ幅連動（cqw）にするため */
       }
       .game-wrap canvas { display: block; width: 100%; aspect-ratio: 720 / 840; touch-action: none; }
 
       .game-wrap .overlay {
         position: absolute; inset: 0; display: none;
         flex-direction: column; align-items: center; justify-content: flex-start;
-        text-align: center; padding: 22px; z-index: 3; overflow-y: auto;
+        text-align: center; padding: 14px 18px; z-index: 3;
+        overflow-y: auto; overflow-x: hidden;
       }
+      .game-wrap .overlay > * { max-width: 100%; }
       /* 内容がステージの高さを超える場合でも、先頭・末尾の自動マージンで
          収まる時は中央寄せを保ち、はみ出す時は上からスクロールして
          スタートボタンまで到達できるようにする */
@@ -112,14 +115,17 @@
       .game-wrap .pop { animation: gpop .35s cubic-bezier(.2, 2.2, .4, 1) both; }
       @keyframes gpop { from { transform: scale(.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-      .game-wrap .title-bass { width: 118px; height: 118px; object-fit: contain; margin-bottom: 2px; }
-      .game-wrap .title-name { color: #fff; font-size: clamp(30px, 9.5vw, 42px); font-weight: 800; letter-spacing: .02em; line-height: 1.1; white-space: nowrap; text-shadow: 0 4px 0 rgba(0,0,0,.35); }
+      .game-wrap .title-bass { width: 80px; height: 80px; object-fit: contain; margin-bottom: 0; }
+      /* タイトル11文字がステージ幅に1行で収まるサイズにする。
+         フォールバックは vw 連動、対応環境ではステージ幅連動（cqw）を使う。
+         390px幅: 7.9cqw ≒ 30.8px → 11文字＋字間で約345px ≦ 内幅354px に収まる */
+      .game-wrap .title-name { color: #fff; font-size: clamp(24px, 7.6vw, 38px); font-size: clamp(24px, 7.9cqw, 38px); font-weight: 800; letter-spacing: .02em; line-height: 1.1; white-space: nowrap; text-shadow: 0 4px 0 rgba(0,0,0,.35); }
       .game-wrap .title-name .accent { color: var(--gold); }
-      .game-wrap .title-desc { color: #cfd4ff; font-size: 14.5px; font-weight: 700; line-height: 1.65; margin: 12px 0 16px; }
-      .game-wrap .chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 20px; max-width: 340px; }
+      .game-wrap .title-desc { color: #cfd4ff; font-size: 13.5px; font-weight: 700; line-height: 1.5; margin: 8px 0 10px; }
+      .game-wrap .chips { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin-bottom: 12px; max-width: 100%; }
       .game-wrap .chip {
         background: rgba(255,255,255,.12); color: #eef; border: 1.5px solid rgba(255,255,255,.22);
-        font-size: 12px; font-weight: 700; border-radius: 999px; padding: 4px 11px;
+        font-size: 11.5px; font-weight: 700; border-radius: 999px; padding: 3px 9px;
       }
       .game-wrap .chip.gold { background: rgba(255,198,39,.2); border-color: rgba(255,198,39,.55); color: #ffe08a; }
       .game-wrap .big-btn {
@@ -161,7 +167,7 @@
       @media (max-width: 380px) { .game-wrap .rules ul { grid-template-columns: 1fr; } }
     
       .game-wrap .over-bass { width: 92px; height: 92px; object-fit: contain; margin-bottom: 4px; }
-      .game-wrap .bass-bubble { background: #fff; color: #2a2118; font-weight: 800; font-size: 13.5px; border-radius: 999px; padding: 5px 14px; margin-bottom: 8px; box-shadow: 0 3px 0 rgba(0,0,0,.25); }
+      .game-wrap .bass-bubble { background: #fff; color: #2a2118; font-weight: 800; font-size: 12.5px; border-radius: 999px; padding: 4px 12px; margin-bottom: 6px; box-shadow: 0 3px 0 rgba(0,0,0,.25); }
 
       /* ---------- 結果画面のバスのセリフスタンプ ---------- */
       .game-wrap .result-bass { width: 108px; height: 94px; object-fit: contain; margin-bottom: 2px; }

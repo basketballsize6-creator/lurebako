@@ -59,9 +59,6 @@
       .game-wrap .hud-combo { flex: 1; align-items: flex-start; }
       .game-wrap .hud-combo .value { color: var(--red); }
       .game-wrap .hud-combo .mult { font-size: 12px; font-weight: 800; color: var(--gold-deep); }
-      .game-wrap .hud-life { align-items: center; }
-      .game-wrap .hearts { font-size: 19px; line-height: 1.1; color: var(--red); letter-spacing: 2px; }
-      .game-wrap .hearts .lost { color: var(--card-line); }
       .game-wrap .hud-stage { align-items: center; min-width: 74px; }
       .game-wrap .icon-btn {
         width: 44px; min-height: 52px; border-radius: 14px; border: 2px solid var(--card-line);
@@ -115,14 +112,14 @@
       .game-wrap .pop { animation: gpop .35s cubic-bezier(.2, 2.2, .4, 1) both; }
       @keyframes gpop { from { transform: scale(.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-      .game-wrap .title-bass { width: 80px; height: 80px; object-fit: contain; margin-bottom: 0; }
+      .game-wrap .title-bass { width: 70px; height: 70px; object-fit: contain; margin-bottom: 0; }
       /* タイトル11文字がステージ幅に1行で収まるサイズにする。
          フォールバックは vw 連動、対応環境ではステージ幅連動（cqw）を使う。
          390px幅: 7.9cqw ≒ 30.8px → 11文字＋字間で約345px ≦ 内幅354px に収まる */
       .game-wrap .title-name { color: #fff; font-size: clamp(24px, 7.6vw, 38px); font-size: clamp(24px, 7.9cqw, 38px); font-weight: 800; letter-spacing: .02em; line-height: 1.1; white-space: nowrap; text-shadow: 0 4px 0 rgba(0,0,0,.35); }
       .game-wrap .title-name .accent { color: var(--gold); }
-      .game-wrap .title-desc { color: #cfd4ff; font-size: 13.5px; font-weight: 700; line-height: 1.5; margin: 8px 0 10px; }
-      .game-wrap .chips { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin-bottom: 12px; max-width: 100%; }
+      .game-wrap .title-desc { color: #cfd4ff; font-size: 13.5px; font-weight: 700; line-height: 1.5; margin: 6px 0 8px; }
+      .game-wrap .chips { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin-bottom: 10px; max-width: 100%; }
       .game-wrap .chip {
         background: rgba(255,255,255,.12); color: #eef; border: 1.5px solid rgba(255,255,255,.22);
         font-size: 11.5px; font-weight: 700; border-radius: 999px; padding: 3px 9px;
@@ -205,6 +202,31 @@
       }
       body.game-fs-lock { overflow: hidden; }
 
+      /* ---------- 進行ドット（全10ステージ） ---------- */
+      .game-wrap .progress-dots { display: flex; justify-content: center; gap: 6px; margin: 2px 0 10px; }
+      .game-wrap .prog-dot { width: 11px; height: 11px; border-radius: 50%; background: var(--card-line); border: 2px solid transparent; }
+      .game-wrap .prog-dot.done { background: var(--teal); }
+      .game-wrap .prog-dot.current { background: var(--gold); border-color: #fff2c0; animation: gpulse .5s ease-in-out infinite alternate; }
+      .game-wrap .prog-dot.bonus { border-color: rgba(255,198,39,.65); }
+      .game-wrap .prog-dot.bonus.done { background: var(--gold); }
+
+      /* ---------- ステージ間のバス一言・スピード表示 ---------- */
+      .game-wrap .bass-comment { background: #fff; color: #2a2118; font-weight: 800; font-size: 14px; border-radius: 999px; padding: 5px 14px; margin-top: 10px; box-shadow: 0 3px 0 rgba(0,0,0,.25); }
+      .game-wrap .intro-speed { display: none; background: var(--red); color: #fff; font-weight: 800; font-size: 13.5px; border-radius: 999px; padding: 4px 14px; margin-top: 12px; letter-spacing: .06em; }
+      .game-wrap .intro-speed.show { display: inline-block; }
+      .game-wrap .ov-left { color: #d6daff; font-size: 12.5px; font-weight: 700; margin-top: 8px; }
+      .game-wrap .title-best { color: var(--gold); font-weight: 800; font-size: 14px; margin-top: 10px; }
+      .game-wrap .title-best:empty { display: none; }
+
+      /* ---------- 最終結果（ランク・称号） ---------- */
+      .game-wrap .over-rank { font-size: 84px; font-weight: 800; line-height: 1; color: var(--gold); text-shadow: 0 5px 0 rgba(0,0,0,.4); margin-top: 2px; }
+      .game-wrap .over-rank-title { color: #fff; font-size: 24px; font-weight: 800; margin-top: 4px; }
+      .game-wrap .over-newbest { display: none; background: var(--red); color: #fff; font-weight: 800; font-size: 14px; border-radius: 999px; padding: 4px 16px; margin-top: 10px; }
+      .game-wrap .over-newbest.show { display: inline-block; }
+      .game-wrap .over-comment { background: #fff; color: #2a2118; font-weight: 800; font-size: 13px; border-radius: 999px; padding: 4px 13px; margin-top: 10px; box-shadow: 0 3px 0 rgba(0,0,0,.25); }
+      .game-wrap .over-stats { flex-wrap: wrap; justify-content: center; }
+      .game-wrap .over-stat { min-width: 76px; padding: 8px 10px; }
+
 </style>
 <!-- ============================================================
      広告枠（上部）: AdSense 審査通過後、この .game-ad-house（自社宣伝バナー）を
@@ -233,12 +255,11 @@
           <div class="label">STAGE</div>
           <div class="value" id="hudStage">-</div>
         </div>
-        <div class="hud-box hud-life">
-          <div class="label">LIFE</div>
-          <div class="hearts" id="hudHearts">♥♥♥</div>
-        </div>
         <button class="icon-btn" id="muteBtn" aria-label="サウンド ON/OFF">♪</button>
       </div>
+
+      <!-- 進行ドット（全10ステージ） -->
+      <div class="progress-dots" id="progDots"></div>
 
       <!-- 全画面 -->
       <div class="game-tools">
@@ -255,7 +276,7 @@
             <div class="bass-bubble">「今日は渋い」なんて言わせない！</div>
             <img class="title-bass" src="/assets/stamp-bass1.png" alt="ブラックバス">
             <div class="title-name">バスのタイミング<span class="accent">ショー</span></div>
-            <p class="title-desc">次々と襲いかかるバス釣りのピンチを、タップ1つの<br/>タイミングだけで切り抜けろ！<br/>ノーミスでつなぐとコンボで得点アップ。</p>
+            <p class="title-desc">全10ステージを、タップ1つのタイミングだけで切り抜けろ！<br/>順番は毎回シャッフル、進むほどスピードアップ。<br/>ミスしても最後まで行ける。目指せ「琵琶湖の主」！</p>
             <div class="chips">
               <span class="chip">キャストゲージ</span><span class="chip">対岸ダッシュ</span>
               <span class="chip">ランディングネット</span><span class="chip">岩場ジャンプ</span>
@@ -264,6 +285,7 @@
               <span class="chip">流木ダッシュ</span><span class="chip gold">ボーナスステージ</span>
             </div>
             <button class="big-btn" id="startBtn">▶ スタート</button>
+            <div class="title-best" id="titleBest"></div>
           </div>
 
           <!-- Intro -->
@@ -271,6 +293,8 @@
             <div class="ov-stage-tag" id="introTag">STAGE 1</div>
             <div class="ov-game-name" id="introName">キャストゲージ</div>
             <div class="ov-game-how" id="introHow">ピンスポットで止めろ！</div>
+            <div><span class="intro-speed" id="introSpeed"></span></div>
+            <div class="ov-left" id="introLeft"></div>
             <div class="ov-skip">タップで今すぐスタート</div>
           </div>
 
@@ -280,15 +304,21 @@
             <div class="ov-result-big pop" id="resultBig">PERFECT!</div>
             <div class="ov-result-sub" id="resultSub">+300</div>
             <div class="ov-result-reason" id="resultReason"></div>
+            <div class="bass-comment" id="resultComment"></div>
           </div>
 
-          <!-- Game over -->
+          <!-- Final results -->
           <div class="overlay dim" id="ovOver">
             <img class="over-bass" src="/assets/stamp-bass1.png" alt="">
-            <div class="over-title">ゲームオーバー</div>
+            <div class="over-title">結果発表</div>
+            <div class="over-rank" id="overRank">C</div>
+            <div class="over-rank-title" id="overRankTitle">ボウズ</div>
+            <div><span class="over-newbest" id="overNewBest">🏆 記録更新！</span></div>
+            <div class="over-comment" id="overComment"></div>
             <div class="over-score" id="overScore">SCORE 0</div>
             <div class="over-stats">
-              <div class="over-stat"><div class="k">到達ステージ</div><div class="v" id="overStage">1</div></div>
+              <div class="over-stat"><div class="k">PERFECT</div><div class="v" id="overPerfect">0</div></div>
+              <div class="over-stat"><div class="k">成功</div><div class="v" id="overGood">0</div></div>
               <div class="over-stat"><div class="k">最大コンボ</div><div class="v" id="overCombo">0</div></div>
               <div class="over-stat"><div class="k">ベスト</div><div class="v" id="overBest">0</div></div>
             </div>
@@ -298,11 +328,11 @@
       </div>
 
       <button class="tap-btn idle" id="tapBtn">タップ！</button>
-      <p class="hint">画面タップでも、スペースキーでも遊べます。ライフは3つ、ミスで1つ減ります。</p>
+      <p class="hint">画面タップでも、スペースキーでも遊べます。全10ステージ、ミスしても次へ進みます。</p>
 
       <section class="rules">
         <h2>遊び方</h2>
-        <p>ミニゲームがランダムに次々と出てきます。やることは「ちょうどいい瞬間にタップする」だけ。ど真ん中ならPERFECT（300点）、成功で100点。コンボが伸びるほど倍率が上がり（最大×5）、5ステージ進むごとにボーナスゲームで大逆転のチャンスです。</p>
+        <p>9つのミニゲームとボーナスステージ、全10ステージを1回ずつプレイします。順番は毎回シャッフルされ、ステージが進むほどスピードが上がります。やることは「ちょうどいい瞬間にタップする」だけ。ど真ん中ならPERFECT（300点）、成功で100点。コンボが伸びるほど倍率が上がり（最大×5）、ミスしてもゲームは続きます。フィナーレのボーナスでジャックポット（1000点）をねらい、最後は合計スコアでランク（S／A／B／C）と称号が決まります。</p>
         <ul>
           <li>キャストゲージ<span>動く針をピンスポットで止める</span></li>
           <li>対岸ダッシュ<span>ボートの切れ目に対岸へダッシュ</span></li>
@@ -1358,48 +1388,79 @@
 
       var factories = [gameStopBar, gameRoad, gameHammer, gameJump, gameCannon, gameFishing, gameShoot, gameDodge, gameDash];
 
-      /* ================= ゲーム進行 ================= */
+      /* ================= ゲーム進行 =================
+         仕様：ライフ制なし。全9ミニゲーム（順番シャッフル）＋ボーナス＝全10ステージを
+         1回ずつプレイし、ミスしても次へ進む。進むほど速度倍率 1.0→1.6 に上昇。 */
+      var TOTAL_STAGES = 10;
+      function loadBest() {
+        try { return parseInt(localStorage.getItem('bassTimingShowBest') || '0', 10) || 0; } catch (e) { return 0; }
+      }
+      function saveBest(v) {
+        try { localStorage.setItem('bassTimingShowBest', String(v)); } catch (e) {}
+      }
       var S = {
-        mode: 'title', score: 0, combo: 0, maxCombo: 0, lives: 3,
-        stage: 0, best: 0, game: null, isBonus: false, bonusNext: false,
-        lastIdx: -1, introT: 0, resultT: 0, gt: 0, overAt: 0
+        mode: 'title', score: 0, combo: 0, maxCombo: 0,
+        queue: [], pos: -1, speedMul: 1, perfects: 0, goods: 0, newBest: false,
+        best: loadBest(), game: null, isBonus: false,
+        introT: 0, resultT: 0, gt: 0, overAt: 0
       };
       var $ = function (id) { return document.getElementById(id); };
       var hudScore = $('hudScore'), hudCombo = $('hudCombo'), hudMult = $('hudMult'),
-        hudStage = $('hudStage'), hudHearts = $('hudHearts'), tapBtn = $('tapBtn');
+        hudStage = $('hudStage'), tapBtn = $('tapBtn'), progDots = $('progDots');
 
       function mult() { return Math.min(5, 1 + Math.floor(S.combo / 4)); }
+      function buildDots() {
+        var html = '';
+        for (var i = 0; i < TOTAL_STAGES; i++) html += '<span class="prog-dot' + (i === TOTAL_STAGES - 1 ? ' bonus' : '') + '"></span>';
+        progDots.innerHTML = html;
+      }
       function updateHUD() {
         hudScore.textContent = S.score.toLocaleString();
         hudCombo.textContent = S.combo;
         hudMult.textContent = S.combo >= 4 ? '×' + mult() : '';
-        hudStage.textContent = S.mode === 'title' ? '-' : (S.isBonus ? 'B' : S.stage);
-        var h = '';
-        for (var i = 0; i < 3; i++) h += i < S.lives ? '♥' : '<span class="lost">♥</span>';
-        hudHearts.innerHTML = h;
+        hudStage.textContent = (S.mode === 'title' || S.pos < 0) ? '-' : ((S.isBonus ? 'B' : S.pos + 1) + '/' + TOTAL_STAGES);
+        var dots = progDots.children;
+        for (var i = 0; i < dots.length; i++) {
+          var done = S.mode === 'over' || i < S.pos || (i === S.pos && S.mode === 'result');
+          var cur = i === S.pos && (S.mode === 'intro' || S.mode === 'play');
+          dots[i].classList.toggle('done', !!done);
+          dots[i].classList.toggle('current', !!cur);
+        }
         tapBtn.classList.toggle('pulse', S.mode === 'play');
         tapBtn.classList.toggle('idle', S.mode !== 'play');
+      }
+      function refreshTitleBest() {
+        $('titleBest').textContent = S.best > 0 ? '🏆 ベストスコア ' + S.best.toLocaleString() : '';
       }
       function showOverlay(id) {
         ['ovTitle', 'ovIntro', 'ovResult', 'ovOver'].forEach(function (o) {
           $(o).classList.toggle('show', o === id);
         });
       }
-      function pickGame() {
-        var idx;
-        do { idx = Math.floor(Math.random() * factories.length); } while (idx === S.lastIdx);
-        S.lastIdx = idx;
-        return factories[idx](Math.min(S.stage, 14));
+      /* 全9ミニゲームをシャッフルし、最後にボーナスを置いた出題キューを作る */
+      function buildQueue() {
+        var idxs = factories.map(function (_, i) { return i; });
+        for (var i = idxs.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var tmp = idxs[i]; idxs[i] = idxs[j]; idxs[j] = tmp;
+        }
+        idxs.push(-1); /* -1 = ボーナス（フィナーレ固定） */
+        return idxs;
       }
       function nextStage() {
-        if (S.bonusNext) {
-          S.bonusNext = false; S.isBonus = true; S.game = gameBonus();
-        } else {
-          S.isBonus = false; S.stage++; S.game = pickGame();
-        }
-        $('introTag').textContent = S.isBonus ? 'BONUS' : 'STAGE ' + S.stage;
+        S.pos++;
+        var q = S.queue[S.pos];
+        S.isBonus = q === -1;
+        S.speedMul = 1 + 0.6 * S.pos / (TOTAL_STAGES - 1);
+        S.game = S.isBonus ? gameBonus() : factories[q](S.pos + 1);
+        $('introTag').textContent = S.isBonus ? 'FINAL STAGE' : 'STAGE ' + (S.pos + 1) + ' / ' + TOTAL_STAGES;
         $('introName').textContent = S.game.name;
         $('introHow').textContent = S.game.how;
+        var spd = $('introSpeed');
+        if (S.isBonus) { spd.textContent = '★ ラストステージ！'; spd.classList.add('show'); }
+        else if (S.pos >= 1) { spd.textContent = '⚡ スピードアップ！ ×' + S.speedMul.toFixed(2); spd.classList.add('show'); }
+        else spd.classList.remove('show');
+        $('introLeft').textContent = S.isBonus ? 'フィナーレ！' : ('あと ' + (TOTAL_STAGES - 1 - S.pos) + ' ステージ');
         S.mode = 'intro'; S.introT = 1.6;
         showOverlay('ovIntro');
         sndCount();
@@ -1410,26 +1471,39 @@
         showOverlay(null);
         updateHUD();
       }
+      /* ステージ間に挟むバスキャラの一言（煽り・応援・実況風） */
+      var SAY = {
+        perfect: ['食った！ど真ん中！', '待ってた！完璧だ！', 'よっしゃ、PERFECT！'],
+        good: ['お、釣れた！', 'なかなかやるな', 'その調子！'],
+        miss: ['見切った', 'それ偽物だよ', '今じゃない', 'まだまだだな…'],
+        bonus: ['お宝ゲットだな！', 'やるじゃん！']
+      };
+      function pickSay(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
       function finishStage() {
-        var g = S.game, r = g.result, pts = 0, sub = '', big = '', cls = '';
+        var g = S.game, r = g.result, pts = 0, sub = '', big = '', cls = '', say = '';
         if (r === 'bonus') {
           pts = g.bonusPts; S.score += pts;
           big = 'ボーナスGET!'; cls = 'bonus'; sub = '+' + pts + '点';
+          say = (g.reason || '').indexOf('ジャックポット') >= 0 ? 'デカバス注意！やったな！' : pickSay(SAY.bonus);
           sndBonus();
         } else if (r === 'perfect' || r === 'good') {
           S.combo++; S.maxCombo = Math.max(S.maxCombo, S.combo);
+          if (r === 'perfect') S.perfects++; else S.goods++;
           var base = r === 'perfect' ? 300 : 100;
           pts = base * mult(); S.score += pts;
           big = r === 'perfect' ? 'PERFECT!' : '成功！'; cls = r;
           sub = '+' + pts + '点' + (mult() > 1 ? '（コンボ×' + mult() + '）' : '');
-          if (!S.isBonus && S.stage % 5 === 0) S.bonusNext = true;
+          say = pickSay(r === 'perfect' ? SAY.perfect : SAY.good);
           if (r === 'perfect') sndPerfect(); else sndGood();
         } else {
-          S.combo = 0; S.lives--;
-          big = 'ミス…'; cls = 'miss'; sub = 'ライフ −1';
+          S.combo = 0;
+          big = 'ミス…'; cls = 'miss'; sub = '0点（コンボ リセット）';
+          say = pickSay(SAY.miss);
           sndMiss();
           if (navigator.vibrate) navigator.vibrate(120);
         }
+        /* 次がフィナーレのときは専用コメントで煽る */
+        if (!S.isBonus && S.pos === TOTAL_STAGES - 2) say = '次がラスト、ボーナスだ！本気を出せ！';
         /* バスのセリフスタンプ（成功＝食った！系／ミス＝見切った系／大当たり＝デカバス注意） */
         var sayImgs;
         if (r === 'bonus') sayImgs = [(g.reason || '').indexOf('ジャックポット') >= 0 ? '/assets/stamp-say2-08.png' : '/assets/stamp-say-08.png'];
@@ -1441,29 +1515,52 @@
         rb.textContent = big; rb.className = 'ov-result-big pop ' + cls;
         $('resultSub').textContent = sub;
         $('resultReason').textContent = g.reason || '';
-        S.mode = 'result'; S.resultT = 1.35;
+        $('resultComment').textContent = say;
+        S.mode = 'result'; S.resultT = 1.5;
         showOverlay('ovResult');
         updateHUD();
       }
-      function gameOver() {
-        S.best = Math.max(S.best, S.score);
+      function advanceFromResult() {
+        if (S.pos >= TOTAL_STAGES - 1) finishRun();
+        else nextStage();
+      }
+      /* 最終結果：合計スコアでランク＋称号を決める */
+      var RANKS = [
+        { min: 4000, rank: 'S', title: '琵琶湖の主', comment: '参りました…あんたが主だ' },
+        { min: 2800, rank: 'A', title: 'デカバスハンター', comment: 'デカいのばっかり釣りおって…' },
+        { min: 1600, rank: 'B', title: '週末アングラー', comment: 'まあまあ、悪くないな' },
+        { min: 0, rank: 'C', title: 'ボウズ', comment: '今日は渋い日だったな…' }
+      ];
+      function finishRun() {
+        S.newBest = S.score > S.best;
+        if (S.newBest) { S.best = S.score; saveBest(S.best); }
+        var rk = RANKS[RANKS.length - 1];
+        for (var i = 0; i < RANKS.length; i++) { if (S.score >= RANKS[i].min) { rk = RANKS[i]; break; } }
         S.mode = 'over';
         S.overAt = performance.now();
+        $('overRank').textContent = rk.rank;
+        $('overRankTitle').textContent = rk.title;
+        $('overComment').textContent = rk.comment;
+        $('overNewBest').classList.toggle('show', S.newBest);
         $('overScore').textContent = 'SCORE ' + S.score.toLocaleString();
-        $('overStage').textContent = S.stage;
+        $('overPerfect').textContent = S.perfects;
+        $('overGood').textContent = S.goods;
         $('overCombo').textContent = S.maxCombo;
         $('overBest').textContent = S.best.toLocaleString();
+        refreshTitleBest();
         showOverlay('ovOver');
         updateHUD();
       }
       function startRun() {
         ac();
-        S.score = 0; S.combo = 0; S.maxCombo = 0; S.lives = 3;
-        S.stage = 0; S.lastIdx = -1; S.bonusNext = false;
+        S.score = 0; S.combo = 0; S.maxCombo = 0;
+        S.perfects = 0; S.goods = 0; S.newBest = false;
+        S.queue = buildQueue(); S.pos = -1;
         nextStage();
       }
       function doTap() {
         if (S.mode === 'intro') { startPlay(); return; }
+        if (S.mode === 'result') { advanceFromResult(); return; }
         if (S.mode !== 'play' || !S.game) return;
         sndTap();
         S.game.tap();
@@ -1491,14 +1588,12 @@
           S.introT -= dt;
           if (S.introT <= 0) startPlay();
         } else if (S.mode === 'play' && S.game) {
-          S.game.update(dt);
+          /* ステージが進むほど速くなる（ボーナスは専用のテンポを維持） */
+          S.game.update(dt * (S.isBonus ? 1 : S.speedMul));
           if (S.game.done && S.mode === 'play') finishStage();
         } else if (S.mode === 'result') {
           S.resultT -= dt;
-          if (S.resultT <= 0) {
-            if (S.lives <= 0) gameOver();
-            else nextStage();
-          }
+          if (S.resultT <= 0) advanceFromResult();
         }
         /* 描画 */
         var scale = cv.width / W;
@@ -1513,7 +1608,7 @@
       /* ================= 入力 ================= */
       $('stageBox').addEventListener('pointerdown', function (e) {
         if (e.target.closest('button')) return;
-        if (S.mode === 'play' || S.mode === 'intro') { e.preventDefault(); doTap(); }
+        if (S.mode === 'play' || S.mode === 'intro' || S.mode === 'result') { e.preventDefault(); doTap(); }
       });
       /* タイトル/ゲームオーバー画面ではステージのタップでも開始・リスタート（ドラッグでのスクロールと誤認しないよう click で受ける） */
       $('stageBox').addEventListener('click', function (e) {
@@ -1551,6 +1646,8 @@
         setFs(!document.querySelector('.game-wrap').classList.contains('fs'));
       });
 
+      buildDots();
+      refreshTitleBest();
       fitCanvas();
       setTimeout(fitCanvas, 60);
       updateHUD();

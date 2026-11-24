@@ -1217,7 +1217,7 @@
       var S = {
         mode: 'title', score: 0, combo: 0, maxCombo: 0, lives: 3,
         stage: 0, best: 0, game: null, isBonus: false, bonusNext: false,
-        lastIdx: -1, introT: 0, resultT: 0, gt: 0
+        lastIdx: -1, introT: 0, resultT: 0, gt: 0, overAt: 0
       };
       var $ = function (id) { return document.getElementById(id); };
       var hudScore = $('hudScore'), hudCombo = $('hudCombo'), hudMult = $('hudMult'),
@@ -1296,6 +1296,7 @@
       function gameOver() {
         S.best = Math.max(S.best, S.score);
         S.mode = 'over';
+        S.overAt = performance.now();
         $('overScore').textContent = 'SCORE ' + S.score.toLocaleString();
         $('overStage').textContent = S.stage;
         $('overCombo').textContent = S.maxCombo;
@@ -1315,6 +1316,16 @@
         sndTap();
         S.game.tap();
         if (S.game.done) finishStage();
+      }
+      /* タイトル/ゲームオーバー画面でも「タップ！」やステージのタップで開始・リスタートできるようにする入口 */
+      function handleTapAction() {
+        if (S.mode === 'title') { startRun(); return; }
+        if (S.mode === 'over') {
+          /* 結果表示直後の誤タップで即リスタートしないよう、表示後0.9秒は無効 */
+          if (performance.now() - S.overAt < 900) return;
+          startRun(); return;
+        }
+        doTap();
       }
 
       /* ================= メインループ ================= */
@@ -1352,7 +1363,12 @@
         if (e.target.closest('button')) return;
         if (S.mode === 'play' || S.mode === 'intro') { e.preventDefault(); doTap(); }
       });
-      tapBtn.addEventListener('click', function () { doTap(); });
+      /* タイトル/ゲームオーバー画面ではステージのタップでも開始・リスタート（ドラッグでのスクロールと誤認しないよう click で受ける） */
+      $('stageBox').addEventListener('click', function (e) {
+        if (e.target.closest('button')) return;
+        if (S.mode === 'title' || S.mode === 'over') handleTapAction();
+      });
+      tapBtn.addEventListener('click', function () { handleTapAction(); });
       $('startBtn').addEventListener('click', startRun);
       $('retryBtn').addEventListener('click', startRun);
       document.addEventListener('keydown', function (e) {

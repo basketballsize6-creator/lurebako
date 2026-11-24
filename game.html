@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>バスのタイミングショー｜ルアバコ</title>
+<meta name="description" content="タップのタイミングだけで遊べるバス釣りミニゲーム集。キャストゲージやランディングネットなど全9種＋ボーナスステージ。ノーミスでコンボ倍率アップ！">
+<link rel="canonical" href="https://lurebako.com/game.html">
+<link rel="icon" type="image/png" href="/assets/logo.png"><link rel="stylesheet" href="/assets/style.css?v=fafe6793">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet"></head>
+<body><header class="site"><div class="hd-in"><a class="logo" href="/"><img class="logo-img" src="/assets/logo.png" alt=""><span class="logo-txt">ルア<span>バコ</span></span></a><div class="hd-tag">バス釣りルアー検索・購入カタログ</div></div></header><main>
+<nav class="crumbs"><a href="/">トップ</a> ＞ ゲーム</nav>
+<h1 style="font-size:22px;margin-bottom:6px">バスのタイミングショー</h1>
+<p style="color:var(--sub);font-size:13.5px;margin-bottom:14px">タップのタイミングだけで遊べる、バス釣りがテーマのミニゲーム集です。ミニゲームはランダムに出題。PERFECT300点・成功100点、コンボで最大×5倍、5ステージごとにボーナスステージがあります。</p>
+<!-- バスのタイミングショー：このフラグメントは build_site.py が game.html に組み込む（game_src/game_fragment.html） -->
+<style>
+.game-ad{max-width:480px;margin:0 auto 12px}
+.game-ad-b{margin:14px auto 0}
+.game-ad-house{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px dashed var(--line);border-radius:14px;padding:10px 14px;color:var(--txt);text-decoration:none;font-size:13.5px;line-height:1.55}
+.game-ad-house img{width:54px;height:54px;object-fit:contain;flex:none}
+.game-ad-house b{color:var(--acc)}
+.game-cta{max-width:480px;margin:14px auto 0}
+
+      .game-wrap {
+        --ink: #e9f0e6;
+        --ink-soft: #a9bda6;
+        --card: #111b12;
+        --card-line: #243525;
+        --stage-bg: #0e2a33;
+        --stage-bg2: #071a20;
+        --gold: #ffc627;
+        --gold-deep: #f59e0b;
+        --red: #ff4b33;
+        --teal: #12b5a5;
+        --tap-bg: #ff4b33;
+        --tap-shadow: #c22e1c;
+      }
+      .game-wrap, .game-wrap * { box-sizing: border-box; }
+      
+      .game-wrap {
+        font-family: "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", sans-serif;
+        color: var(--ink);
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .game-wrap .wrap { max-width: 480px; margin: 0 auto; }
+
+      .game-wrap /* ---------- HUD ---------- */
+      .hud {
+        display: flex; align-items: stretch; gap: 8px; margin-bottom: 10px;
+      }
+      .game-wrap .hud-box {
+        background: var(--card); border: 2px solid var(--card-line);
+        border-radius: 14px; padding: 6px 12px; min-height: 52px;
+        display: flex; flex-direction: column; justify-content: center;
+      }
+      .game-wrap .hud-box .label { font-size: 10px; font-weight: 700; color: var(--ink-soft); letter-spacing: .08em; }
+      .game-wrap .hud-box .value { font-size: 22px; font-weight: 800; line-height: 1.05; font-variant-numeric: tabular-nums; }
+      .game-wrap .hud-score { flex: 1.2; }
+      .game-wrap .hud-combo { flex: 1; align-items: flex-start; }
+      .game-wrap .hud-combo .value { color: var(--red); }
+      .game-wrap .hud-combo .mult { font-size: 12px; font-weight: 800; color: var(--gold-deep); }
+      .game-wrap .hud-life { align-items: center; }
+      .game-wrap .hearts { font-size: 19px; line-height: 1.1; color: var(--red); letter-spacing: 2px; }
+      .game-wrap .hearts .lost { color: var(--card-line); }
+      .game-wrap .hud-stage { align-items: center; min-width: 74px; }
+      .game-wrap .icon-btn {
+        width: 44px; min-height: 52px; border-radius: 14px; border: 2px solid var(--card-line);
+        background: var(--card); font-size: 20px; cursor: pointer; color: var(--ink);
+        display: flex; align-items: center; justify-content: center; padding: 0;
+      }
+      .game-wrap .icon-btn:active { transform: scale(.94); }
+
+      .game-wrap /* ---------- Stage ---------- */
+      .stage-card {
+        background: var(--stage-bg2); border-radius: 22px; padding: 8px;
+        box-shadow: 0 14px 34px rgba(10, 12, 40, .28);
+      }
+      .game-wrap .stage {
+        position: relative; border-radius: 16px; overflow: hidden;
+        background: var(--stage-bg);
+      }
+      .game-wrap canvas { display: block; width: 100%; aspect-ratio: 720 / 840; touch-action: none; }
+
+      .game-wrap .overlay {
+        position: absolute; inset: 0; display: none;
+        flex-direction: column; align-items: center; justify-content: center;
+        text-align: center; padding: 22px; z-index: 3;
+      }
+      .game-wrap .overlay.show { display: flex; }
+      .game-wrap .overlay.dim { background: rgba(8, 10, 30, .66); }
+
+      .game-wrap .ov-stage-tag {
+        background: var(--gold); color: #3a2a00; font-weight: 800; font-size: 14px;
+        border-radius: 999px; padding: 4px 16px; letter-spacing: .12em; margin-bottom: 12px;
+      }
+      .game-wrap .ov-game-name { color: #fff; font-size: 40px; font-weight: 800; line-height: 1.15; text-shadow: 0 3px 0 rgba(0,0,0,.35); }
+      .game-wrap .ov-game-how { color: #cfd4ff; font-size: 16px; font-weight: 700; margin-top: 10px; line-height: 1.5; }
+      .game-wrap .ov-skip { color: #d6daff; font-size: 12px; margin-top: 18px; font-weight: 700; background: rgba(8,10,30,.62); border-radius: 999px; padding: 5px 14px; }
+
+      .game-wrap .ov-result-big { font-size: 54px; font-weight: 800; line-height: 1.1; text-shadow: 0 4px 0 rgba(0,0,0,.35); }
+      .game-wrap .ov-result-big.perfect { color: var(--gold); }
+      .game-wrap .ov-result-big.good { color: #5eead4; }
+      .game-wrap .ov-result-big.miss { color: #ff7a66; }
+      .game-wrap .ov-result-big.bonus { color: var(--gold); }
+      .game-wrap .ov-result-sub { color: #fff; font-size: 20px; font-weight: 800; margin-top: 8px; }
+      .game-wrap .ov-result-reason { color: #cfd4ff; font-size: 15px; font-weight: 700; margin-top: 4px; }
+      .game-wrap .pop { animation: gpop .35s cubic-bezier(.2, 2.2, .4, 1) both; }
+      @keyframes gpop { from { transform: scale(.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+      .game-wrap .title-bass { width: 118px; height: 118px; object-fit: contain; margin-bottom: 2px; }
+      .game-wrap .title-name { color: #fff; font-size: clamp(30px, 9.5vw, 42px); font-weight: 800; letter-spacing: .02em; line-height: 1.1; white-space: nowrap; text-shadow: 0 4px 0 rgba(0,0,0,.35); }
+      .game-wrap .title-name .accent { color: var(--gold); }
+      .game-wrap .title-desc { color: #cfd4ff; font-size: 14.5px; font-weight: 700; line-height: 1.65; margin: 12px 0 16px; }
+      .game-wrap .chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 20px; max-width: 340px; }
+      .game-wrap .chip {
+        background: rgba(255,255,255,.12); color: #eef; border: 1.5px solid rgba(255,255,255,.22);
+        font-size: 12px; font-weight: 700; border-radius: 999px; padding: 4px 11px;
+      }
+      .game-wrap .chip.gold { background: rgba(255,198,39,.2); border-color: rgba(255,198,39,.55); color: #ffe08a; }
+      .game-wrap .big-btn {
+        font-family: inherit; font-weight: 800; font-size: 21px; letter-spacing: .06em;
+        background: var(--gold); color: #3a2a00; border: none; border-radius: 999px;
+        padding: 14px 44px; min-height: 56px; cursor: pointer;
+        box-shadow: 0 5px 0 var(--gold-deep), 0 10px 22px rgba(0,0,0,.35);
+      }
+      .game-wrap .big-btn:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--gold-deep); }
+      .game-wrap .over-stats { display: flex; gap: 10px; margin: 14px 0 20px; }
+      .game-wrap .over-stat { background: rgba(255,255,255,.1); border: 1.5px solid rgba(255,255,255,.18); border-radius: 14px; padding: 8px 14px; min-width: 88px; }
+      .game-wrap .over-stat .k { font-size: 10.5px; color: #aab1e8; font-weight: 700; letter-spacing: .08em; }
+      .game-wrap .over-stat .v { font-size: 24px; color: #fff; font-weight: 800; font-variant-numeric: tabular-nums; }
+      .game-wrap .over-title { color: #fff; font-size: 34px; font-weight: 800; }
+      .game-wrap .over-score { color: var(--gold); font-size: 21px; font-weight: 800; margin-top: 6px; }
+
+      .game-wrap /* ---------- TAP button ---------- */
+      .tap-btn {
+        width: 100%; margin-top: 12px; min-height: 78px; border: none; border-radius: 20px;
+        background: var(--tap-bg); color: #fff; font-family: inherit;
+        font-size: 30px; font-weight: 800; letter-spacing: .14em; cursor: pointer;
+        box-shadow: 0 6px 0 var(--tap-shadow), 0 14px 26px rgba(194, 46, 28, .3);
+      }
+      .game-wrap .tap-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--tap-shadow); }
+      .game-wrap .tap-btn.pulse { animation: gpulse .7s ease-in-out infinite alternate; }
+      @keyframes gpulse { from { filter: brightness(1); } to { filter: brightness(1.14); } }
+      .game-wrap .tap-btn.idle { background: #9a97ad; box-shadow: 0 6px 0 #6f6c82; }
+      .game-wrap .tap-btn.idle { background: #3d4470; box-shadow: 0 6px 0 #262b4d; }
+
+      .game-wrap .hint { text-align: center; color: var(--ink-soft); font-size: 12.5px; font-weight: 700; margin-top: 12px; line-height: 1.6; }
+
+      .game-wrap /* ---------- Rules ---------- */
+      .rules { margin-top: 20px; background: var(--card); border: 2px solid var(--card-line); border-radius: 18px; padding: 16px 18px; }
+      .game-wrap .rules h2 { font-size: 16px; margin: 0 0 8px; font-weight: 800; }
+      .game-wrap .rules p { margin: 0 0 10px; font-size: 13.5px; line-height: 1.7; color: var(--ink-soft); font-weight: 500; }
+      .game-wrap .rules ul { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; }
+      .game-wrap .rules li { font-size: 13px; font-weight: 700; padding: 7px 0; border-top: 1.5px dashed var(--card-line); }
+      .game-wrap .rules li span { color: var(--ink-soft); font-weight: 500; font-size: 12px; display: block; margin-top: 1px; }
+      @media (max-width: 380px) { .game-wrap .rules ul { grid-template-columns: 1fr; } }
+    
+      .game-wrap .over-bass { width: 92px; height: 92px; object-fit: contain; margin-bottom: 4px; }
+      .game-wrap .bass-bubble { background: #fff; color: #2a2118; font-weight: 800; font-size: 13.5px; border-radius: 999px; padding: 5px 14px; margin-bottom: 8px; box-shadow: 0 3px 0 rgba(0,0,0,.25); }
+
+</style>
+<!-- ============================================================
+     広告枠（上部）: AdSense 審査通過後、この .game-ad-house（自社宣伝バナー）を
+     AdSense の広告ユニットコード（<ins class="adsbygoogle" ...>）に差し替える。
+     手順の詳細は game_src/README.md を参照。
+     ============================================================ -->
+<div class="game-ad">
+  <a class="game-ad-house" href="https://line.me/S/sticker/38178363/" target="_blank" rel="noopener">
+    <img src="/assets/stamp-bass1.png" alt="">
+    <span><b>LINEスタンプ「バスの言い分」発売中！</b><br>釣られる側の本音を代弁するバスのスタンプ16個・¥190</span>
+  </a>
+</div>
+<div class="game-wrap">
+    <div class="wrap">
+      <!-- HUD -->
+      <div class="hud">
+        <div class="hud-box hud-score">
+          <div class="label">SCORE</div>
+          <div class="value" id="hudScore">0</div>
+        </div>
+        <div class="hud-box hud-combo">
+          <div class="label">COMBO</div>
+          <div class="value"><span id="hudCombo">0</span> <span class="mult" id="hudMult"></span></div>
+        </div>
+        <div class="hud-box hud-stage">
+          <div class="label">STAGE</div>
+          <div class="value" id="hudStage">-</div>
+        </div>
+        <div class="hud-box hud-life">
+          <div class="label">LIFE</div>
+          <div class="hearts" id="hudHearts">♥♥♥</div>
+        </div>
+        <button class="icon-btn" id="muteBtn" aria-label="サウンド ON/OFF">♪</button>
+      </div>
+
+      <!-- Stage -->
+      <div class="stage-card">
+        <div class="stage" id="stageBox">
+          <canvas id="cv" width="720" height="840"></canvas>
+
+          <!-- Title -->
+          <div class="overlay dim show" id="ovTitle">
+            <div class="bass-bubble">「今日は渋い」なんて言わせない！</div>
+            <img class="title-bass" src="/assets/stamp-bass1.png" alt="ブラックバス">
+            <div class="title-name">バスのタイミング<span class="accent">ショー</span></div>
+            <p class="title-desc">次々と襲いかかるバス釣りのピンチを、タップ1つの<br/>タイミングだけで切り抜けろ！<br/>ノーミスでつなぐとコンボで得点アップ。</p>
+            <div class="chips">
+              <span class="chip">キャストゲージ</span><span class="chip">対岸ダッシュ</span>
+              <span class="chip">ランディングネット</span><span class="chip">岩場ジャンプ</span>
+              <span class="chip">遠投チャレンジ</span><span class="chip">バス釣り</span>
+              <span class="chip">ねらい撃ちキャスト</span><span class="chip">迫るクランク</span>
+              <span class="chip">流木ダッシュ</span><span class="chip gold">ボーナスステージ</span>
+            </div>
+            <button class="big-btn" id="startBtn">▶ スタート</button>
+          </div>
+
+          <!-- Intro -->
+          <div class="overlay" id="ovIntro">
+            <div class="ov-stage-tag" id="introTag">STAGE 1</div>
+            <div class="ov-game-name" id="introName">キャストゲージ</div>
+            <div class="ov-game-how" id="introHow">ピンスポットで止めろ！</div>
+            <div class="ov-skip">タップで今すぐスタート</div>
+          </div>
+
+          <!-- Result -->
+          <div class="overlay" id="ovResult">
+            <div class="ov-result-big pop" id="resultBig">PERFECT!</div>
+            <div class="ov-result-sub" id="resultSub">+300</div>
+            <div class="ov-result-reason" id="resultReason"></div>
+          </div>
+
+          <!-- Game over -->
+          <div class="overlay dim" id="ovOver">
+            <img class="over-bass" src="/assets/stamp-bass1.png" alt="">
+            <div class="over-title">ゲームオーバー</div>
+            <div class="over-score" id="overScore">SCORE 0</div>
+            <div class="over-stats">
+              <div class="over-stat"><div class="k">到達ステージ</div><div class="v" id="overStage">1</div></div>
+              <div class="over-stat"><div class="k">最大コンボ</div><div class="v" id="overCombo">0</div></div>
+              <div class="over-stat"><div class="k">ベスト</div><div class="v" id="overBest">0</div></div>
+            </div>
+            <button class="big-btn" id="retryBtn">↻ もう一回</button>
+          </div>
+        </div>
+      </div>
+
+      <button class="tap-btn idle" id="tapBtn">タップ！</button>
+      <p class="hint">画面タップでも、スペースキーでも遊べます。ライフは3つ、ミスで1つ減ります。</p>
+
+      <section class="rules">
+        <h2>遊び方</h2>
+        <p>ミニゲームがランダムに次々と出てきます。やることは「ちょうどいい瞬間にタップする」だけ。ど真ん中ならPERFECT（300点）、成功で100点。コンボが伸びるほど倍率が上がり（最大×5）、5ステージ進むごとにボーナスゲームで大逆転のチャンスです。</p>
+        <ul>
+          <li>キャストゲージ<span>動く針をピンスポットで止める</span></li>
+          <li>対岸ダッシュ<span>ボートの切れ目に対岸へダッシュ</span></li>
+          <li>ランディングネット<span>跳ねたバスを寸前でネットイン</span></li>
+          <li>岩場ジャンプ<span>切れ目の手前でジャンプ</span></li>
+          <li>遠投チャレンジ<span>角度が合った瞬間にキャスト、島に届ける</span></li>
+          <li>バス釣り<span>バスが真下に来たら引き上げる</span></li>
+          <li>ねらい撃ちキャスト<span>ガードの逆を突く。隅ならPERFECT</span></li>
+          <li>迫るクランク<span>真正面から迫るクランクベイトを目の前でよける</span></li>
+          <li>流木ダッシュ<span>手前に迫る流木をジャンプでかわす</span></li>
+          <li>ボーナス<span>光がジャックポットで止まれば1000点</span></li>
+        </ul>
+      </section>
+    </div>
+
+    </div>
+<div class="game-cta">
+  <p class="rank-link-wrap"><a class="rank-link" href="https://lurebako.com/lures.html">🎣 ルアーを探す｜バスルアー・ワームのカタログ ▸</a></p>
+  <p class="rank-link-wrap"><a class="rank-link sub" href="https://lurebako.com/">ルアバコ トップ｜ロッド・リール・小物も探せる ▸</a></p>
+</div>
+<!-- ============================================================
+     広告枠（下部）: AdSense 審査通過後、この .game-ad-house（自社宣伝バナー）を
+     AdSense の広告ユニットコード（<ins class="adsbygoogle" ...>）に差し替える。
+     手順の詳細は game_src/README.md を参照。
+     ============================================================ -->
+<div class="game-ad game-ad-b">
+  <a class="game-ad-house" href="https://line.me/S/sticker/38178505/" target="_blank" rel="noopener">
+    <img src="/assets/stamp-basser.png" alt="">
+    <span><b>LINEスタンプ「バサーの会話」発売中！</b><br>劇画タッチでバサー用語がそのまま使えるスタンプ16個・¥190</span>
+  </a>
+</div>
+<script>
+      "use strict";
+      /* ================= 基本セットアップ ================= */
+      var W = 720, H = 840;
+      var cv = document.getElementById('cv');
+      var ctx = cv.getContext('2d');
+
+      function fitCanvas() {
+        var r = cv.getBoundingClientRect();
+        var dpr = Math.min(window.devicePixelRatio || 1, 2);
+        cv.width = Math.max(2, Math.round(r.width * dpr));
+        cv.height = Math.round(cv.width * H / W);
+      }
+      window.addEventListener('resize', fitCanvas);
+
+      /* ================= サウンド ================= */
+      var AC = null, muted = false;
+      function ac() {
+        if (!AC) { try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { AC = null; } }
+        if (AC && AC.state === 'suspended') AC.resume();
+        return AC;
+      }
+      function tone(freq, delay, dur, type, vol) {
+        if (muted) return;
+        var a = ac(); if (!a) return;
+        var o = a.createOscillator(), g = a.createGain();
+        o.type = type || 'square'; o.frequency.value = freq;
+        var s = a.currentTime + (delay || 0);
+        g.gain.setValueAtTime(0.0001, s);
+        g.gain.exponentialRampToValueAtTime(vol || 0.07, s + 0.012);
+        g.gain.exponentialRampToValueAtTime(0.0001, s + dur);
+        o.connect(g); g.connect(a.destination);
+        o.start(s); o.stop(s + dur + 0.05);
+      }
+      function sndTap() { tone(700, 0, 0.06, 'square', 0.05); }
+      function sndGood() { tone(523, 0, 0.09); tone(784, 0.09, 0.15); }
+      function sndPerfect() { [523, 659, 784, 1047].forEach(function (f, i) { tone(f, i * 0.07, 0.16); }); }
+      function sndMiss() { tone(170, 0, 0.22, 'sawtooth', 0.06); tone(110, 0.06, 0.3, 'sawtooth', 0.055); }
+      function sndBonus() { [392, 523, 659, 784, 1047, 1319].forEach(function (f, i) { tone(f, i * 0.06, 0.15, 'triangle', 0.09); }); }
+      function sndCount() { tone(440, 0, 0.07, 'square', 0.06); }
+
+      /* ================= 描画ヘルパー ================= */
+      function rr(x, y, w, h, r) {
+        r = Math.min(r, w / 2, h / 2);
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.arcTo(x + w, y, x + w, y + h, r);
+        ctx.arcTo(x + w, y + h, x, y + h, r);
+        ctx.arcTo(x, y + h, x, y, r);
+        ctx.arcTo(x, y, x + w, y, r);
+        ctx.closePath();
+      }
+      function circle(x, y, r) { ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); }
+      function txt(s, x, y, size, color, align) {
+        ctx.font = '800 ' + size + 'px "M PLUS Rounded 1c", sans-serif';
+        ctx.fillStyle = color; ctx.textAlign = align || 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(s, x, y);
+      }
+      /* マスコットキャラ：大きな丸頭＋後ろ向きキャップ＋小さな全身、太い輪郭
+         mood: normal/happy/dizzy/scared/strain, arms: down/up/none */
+      function drawChar(x, y, r, mood, flip, arms) {
+        arms = arms || 'down';
+        ctx.save();
+        ctx.translate(x, y);
+        if (flip) ctx.scale(-1, 1);
+        if (mood === 'dizzy') ctx.rotate(0.45);
+        var ink = '#2a2118', skin = '#ffdfae';
+        ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+        /* 脚 */
+        ctx.strokeStyle = skin; ctx.lineWidth = r * 0.21;
+        ctx.beginPath(); ctx.moveTo(-r * 0.24, r * 1.06); ctx.lineTo(-r * 0.26, r * 1.3); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(r * 0.24, r * 1.06); ctx.lineTo(r * 0.26, r * 1.3); ctx.stroke();
+        /* 靴 */
+        [[-1], [1]].forEach(function (s) {
+          ctx.beginPath(); ctx.ellipse(s[0] * r * 0.3, r * 1.38, r * 0.21, r * 0.11, 0, 0, Math.PI * 2);
+          ctx.fillStyle = '#e63946'; ctx.fill();
+          ctx.strokeStyle = ink; ctx.lineWidth = r * 0.045; ctx.stroke();
+        });
+        /* 短パン */
+        ctx.fillStyle = '#2f5fb3'; rr(-r * 0.47, r * 0.82, r * 0.94, r * 0.34, r * 0.09); ctx.fill();
+        ctx.strokeStyle = ink; ctx.lineWidth = r * 0.045; rr(-r * 0.47, r * 0.82, r * 0.94, r * 0.34, r * 0.09); ctx.stroke();
+        /* 胴体（赤シャツ） */
+        ctx.fillStyle = '#ff5a3c'; rr(-r * 0.54, r * 0.4, r * 1.08, r * 0.52, r * 0.16); ctx.fill();
+        ctx.strokeStyle = ink; ctx.lineWidth = r * 0.05; rr(-r * 0.54, r * 0.4, r * 1.08, r * 0.52, r * 0.16); ctx.stroke();
+        /* 腕 */
+        if (arms !== 'none') {
+          var ax = arms === 'up' ? r * 0.82 : r * 0.7;
+          var ay = arms === 'up' ? -r * 0.14 : r * 1.0;
+          ctx.strokeStyle = skin; ctx.lineWidth = r * 0.19;
+          ctx.beginPath(); ctx.moveTo(-r * 0.5, r * 0.54); ctx.lineTo(-ax, ay); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(r * 0.5, r * 0.54); ctx.lineTo(ax, ay); ctx.stroke();
+          ctx.strokeStyle = '#ff5a3c'; ctx.lineWidth = r * 0.25;
+          ctx.beginPath(); ctx.moveTo(-r * 0.5, r * 0.54); ctx.lineTo(-r * 0.57, r * 0.62); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(r * 0.5, r * 0.54); ctx.lineTo(r * 0.57, r * 0.62); ctx.stroke();
+        }
+        /* 頭 */
+        circle(0, 0, r); ctx.fillStyle = skin; ctx.fill();
+        ctx.strokeStyle = ink; ctx.lineWidth = r * 0.055; ctx.stroke();
+        /* キャップ（後ろ向き） */
+        ctx.beginPath();
+        ctx.arc(0, -r * 0.1, r * 0.98, Math.PI * 1.03, Math.PI * 1.97);
+        ctx.closePath();
+        ctx.fillStyle = '#2f7fe0'; ctx.fill();
+        ctx.strokeStyle = ink; ctx.lineWidth = r * 0.05; ctx.stroke();
+        ctx.save(); ctx.translate(r * 0.9, -r * 0.44); ctx.rotate(0.5);
+        ctx.fillStyle = '#2f7fe0'; rr(0, -r * 0.09, r * 0.44, r * 0.18, r * 0.09); ctx.fill();
+        ctx.strokeStyle = ink; ctx.lineWidth = r * 0.045; rr(0, -r * 0.09, r * 0.44, r * 0.18, r * 0.09); ctx.stroke();
+        ctx.restore();
+        circle(0, -r * 1.05, r * 0.09); ctx.fillStyle = '#e63946'; ctx.fill();
+        ctx.strokeStyle = ink; ctx.lineWidth = r * 0.04; ctx.stroke();
+        /* 眉 */
+        ctx.strokeStyle = ink; ctx.lineWidth = r * 0.075;
+        ctx.beginPath();
+        if (mood === 'scared') {
+          ctx.moveTo(-r * 0.52, -r * 0.34); ctx.quadraticCurveTo(-r * 0.33, -r * 0.46, -r * 0.14, -r * 0.36);
+          ctx.moveTo(r * 0.14, -r * 0.36); ctx.quadraticCurveTo(r * 0.33, -r * 0.46, r * 0.52, -r * 0.34);
+        } else if (mood === 'strain') {
+          ctx.moveTo(-r * 0.52, -r * 0.42); ctx.lineTo(-r * 0.15, -r * 0.28);
+          ctx.moveTo(r * 0.52, -r * 0.42); ctx.lineTo(r * 0.15, -r * 0.28);
+        } else {
+          ctx.moveTo(-r * 0.5, -r * 0.3); ctx.quadraticCurveTo(-r * 0.33, -r * 0.4, -r * 0.16, -r * 0.31);
+          ctx.moveTo(r * 0.16, -r * 0.31); ctx.quadraticCurveTo(r * 0.33, -r * 0.4, r * 0.5, -r * 0.3);
+        }
+        ctx.stroke();
+        /* 目 */
+        var ey = r * 0.08, ex = r * 0.33;
+        ctx.fillStyle = ink; ctx.strokeStyle = ink;
+        if (mood === 'dizzy') {
+          ctx.lineWidth = r * 0.09;
+          [[-ex, ey], [ex, ey]].forEach(function (p) {
+            ctx.beginPath();
+            ctx.moveTo(p[0] - r * 0.13, p[1] - r * 0.13); ctx.lineTo(p[0] + r * 0.13, p[1] + r * 0.13);
+            ctx.moveTo(p[0] + r * 0.13, p[1] - r * 0.13); ctx.lineTo(p[0] - r * 0.13, p[1] + r * 0.13);
+            ctx.stroke();
+          });
+        } else if (mood === 'happy') {
+          ctx.lineWidth = r * 0.09;
+          [[-ex, ey], [ex, ey]].forEach(function (p) {
+            ctx.beginPath(); ctx.arc(p[0], p[1] + r * 0.07, r * 0.15, Math.PI * 1.08, Math.PI * 1.92); ctx.stroke();
+          });
+        } else if (mood === 'strain') {
+          ctx.lineWidth = r * 0.09;
+          ctx.beginPath();
+          ctx.moveTo(-ex - r * 0.12, ey - r * 0.12); ctx.lineTo(-ex + r * 0.11, ey); ctx.lineTo(-ex - r * 0.12, ey + r * 0.12);
+          ctx.moveTo(ex + r * 0.12, ey - r * 0.12); ctx.lineTo(ex - r * 0.11, ey); ctx.lineTo(ex + r * 0.12, ey + r * 0.12);
+          ctx.stroke();
+        } else {
+          var wr = mood === 'scared' ? 0.19 : 0.155;
+          [[-ex], [ex]].forEach(function (s) {
+            ctx.beginPath(); ctx.ellipse(s[0], ey, r * wr, r * wr * 1.28, 0, 0, Math.PI * 2);
+            ctx.fillStyle = '#fff'; ctx.fill();
+            ctx.strokeStyle = ink; ctx.lineWidth = r * 0.04; ctx.stroke();
+            circle(s[0], ey + r * 0.03, r * 0.075); ctx.fillStyle = ink; ctx.fill();
+            circle(s[0] + r * 0.025, ey, r * 0.025); ctx.fillStyle = '#fff'; ctx.fill();
+          });
+        }
+        /* 口 */
+        ctx.strokeStyle = ink; ctx.fillStyle = '#7a2d20';
+        if (mood === 'happy') {
+          ctx.beginPath(); ctx.arc(0, r * 0.3, r * 0.3, Math.PI * 0.12, Math.PI * 0.88); ctx.closePath(); ctx.fill();
+          ctx.strokeStyle = ink; ctx.lineWidth = r * 0.05; ctx.stroke();
+          ctx.fillStyle = '#ff9d8a';
+          ctx.beginPath(); ctx.arc(0, r * 0.52, r * 0.15, Math.PI * 0.15, Math.PI * 0.85); ctx.closePath(); ctx.fill();
+        } else if (mood === 'dizzy') {
+          ctx.lineWidth = r * 0.08; ctx.beginPath();
+          ctx.moveTo(-r * 0.18, r * 0.42);
+          ctx.quadraticCurveTo(-r * 0.09, r * 0.32, 0, r * 0.42);
+          ctx.quadraticCurveTo(r * 0.09, r * 0.52, r * 0.18, r * 0.42);
+          ctx.stroke();
+        } else if (mood === 'scared' || mood === 'strain') {
+          circle(0, r * 0.44, r * 0.13); ctx.fill();
+          ctx.strokeStyle = ink; ctx.lineWidth = r * 0.045; ctx.stroke();
+        } else {
+          ctx.lineWidth = r * 0.085; ctx.beginPath();
+          ctx.moveTo(-r * 0.17, r * 0.36); ctx.quadraticCurveTo(0, r * 0.5, r * 0.17, r * 0.36); ctx.stroke();
+        }
+        /* ほっぺ */
+        ctx.fillStyle = 'rgba(255,140,110,.55)';
+        circle(-r * 0.62, r * 0.3, r * 0.14); ctx.fill();
+        circle(r * 0.62, r * 0.3, r * 0.14); ctx.fill();
+        ctx.restore();
+      }
+      function drawStageBG(t) {
+        var g = ctx.createLinearGradient(0, 0, 0, H);
+        g.addColorStop(0, '#10333d'); g.addColorStop(0.72, '#0c2733'); g.addColorStop(1, '#071820');
+        ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+        /* スポットライト */
+        ctx.save(); ctx.globalAlpha = 0.10; ctx.fillStyle = '#ffe9a8';
+        [[150, 0], [570, 0]].forEach(function (p, i) {
+          ctx.beginPath();
+          ctx.moveTo(p[0], -10);
+          ctx.lineTo(p[0] + (i === 0 ? 190 : -190), H * 0.86);
+          ctx.lineTo(p[0] + (i === 0 ? 330 : -330), H * 0.86);
+          ctx.closePath(); ctx.fill();
+        });
+        ctx.restore();
+        /* 床 */
+        ctx.fillStyle = '#06141a'; ctx.fillRect(0, H * 0.88, W, H * 0.12);
+        ctx.fillStyle = 'rgba(255,198,39,.5)'; ctx.fillRect(0, H * 0.88, W, 3);
+        /* 舞う紙吹雪（飾り） */
+        var cols = ['#ffc627', '#ff4b33', '#12b5a5', '#7aa2ff'];
+        for (var i = 0; i < 14; i++) {
+          var px = ((i * 173 + t * (14 + i * 3)) % (W + 40)) - 20;
+          var py = (i * 97 + t * 22) % (H * 0.5);
+          ctx.save(); ctx.translate(px, py); ctx.rotate(t * 2 + i);
+          ctx.fillStyle = cols[i % 4]; ctx.globalAlpha = 0.5;
+          ctx.fillRect(-5, -3, 10, 6); ctx.restore();
+        }
+        ctx.globalAlpha = 1;
+      }
+      function drawTimer(g) {
+        if (!g.timeMax) return;
+        var p = Math.max(0, g.timeLeft / g.timeMax);
+        ctx.fillStyle = 'rgba(255,255,255,.18)'; rr(24, 18, W - 48, 14, 7); ctx.fill();
+        ctx.fillStyle = p < 0.3 ? '#ff4b33' : '#ffc627';
+        if (p > 0) { rr(24, 18, (W - 48) * p, 14, 7); ctx.fill(); }
+      }
+
+      /* ================= ミニゲーム群 ================= */
+      function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+      function rnd(a, b) { return a + Math.random() * (b - a); }
+
+      /* 1. キャストゲージ */
+      function gameStopBar(level) {
+        var c = rnd(0.3, 0.7);
+        var goodW = Math.max(0.15, 0.30 - level * 0.011);
+        var perfW = goodW * 0.36;
+        var speed = 0.8 + level * 0.07;
+        var g = { name: 'キャストゲージ', how: 'ピンスポットのど真ん中で止めろ！', timeLeft: 6, timeMax: 6, done: false, result: null, reason: '' };
+        var t = Math.random() * 2, finalX = null;
+        function pos() { var ph = t % 2; return ph < 1 ? ph : 2 - ph; }
+        g.update = function (dt) {
+          if (g.done) return;
+          t += dt * speed; g.timeLeft -= dt;
+          if (g.timeLeft <= 0) { finalX = pos(); g.result = 'miss'; g.reason = '時間切れ！'; g.done = true; }
+        };
+        g.tap = function () {
+          if (g.done) return;
+          finalX = pos();
+          var d = Math.abs(finalX - c);
+          if (d <= perfW / 2) g.result = 'perfect';
+          else if (d <= goodW / 2) g.result = 'good';
+          else { g.result = 'miss'; g.reason = finalX < c ? '左によりすぎ！' : '右によりすぎ！'; }
+          g.done = true;
+        };
+        g.draw = function () {
+          var bx = 56, bw = W - 112, by = 356;
+          txt('ねらえ！ ピンスポット', W / 2, 190, 30, '#cfd4ff');
+          ctx.fillStyle = '#232a52'; rr(bx, by, bw, 52, 26); ctx.fill();
+          ctx.fillStyle = 'rgba(18,181,165,.75)';
+          rr(bx + (c - goodW / 2) * bw, by + 5, goodW * bw, 42, 18); ctx.fill();
+          ctx.fillStyle = '#ffc627';
+          rr(bx + (c - perfW / 2) * bw, by + 5, perfW * bw, 42, 18); ctx.fill();
+          var px = bx + (g.done ? finalX : pos()) * bw;
+          ctx.fillStyle = '#fff';
+          ctx.beginPath(); ctx.moveTo(px, by - 34); ctx.lineTo(px - 15, by - 62); ctx.lineTo(px + 15, by - 62); ctx.closePath(); ctx.fill();
+          ctx.fillRect(px - 3.5, by - 34, 7, 88);
+          ctx.fillStyle = 'rgba(255,255,255,.85)'; rr(bx, by + 76, bw, 10, 5); ctx.fill();
+          drawChar(W / 2, 610, 74, g.done ? (g.result === 'miss' ? 'dizzy' : 'happy') : (g.timeLeft < 2 ? 'scared' : 'normal'));
+          txt(g.done ? '' : 'タップでキャスト！', W / 2, 742, 24, '#8f96c9');
+        };
+        return g;
+      }
+
+      /* 2. 対岸ダッシュ */
+      function gameRoad(level) {
+        var laneY = [248, 388, 528];
+        var g = { name: '対岸ダッシュ', how: 'ボートの切れ目をねらって対岸へ！', timeLeft: 9, timeMax: 9, done: false, result: null, reason: '' };
+        var cars = [];
+        var palette = ['#ff5964', '#4f8ff7', '#ffd23f', '#7bd88f', '#ff9f43'];
+        laneY.forEach(function (y, i) {
+          var dir = i % 2 === 0 ? 1 : -1;
+          var n = 2 + (i === 1 ? 1 : 0);
+          for (var k = 0; k < n; k++) {
+            cars.push({
+              x: (k / n) * W + rnd(0, 120) + (dir < 0 ? 200 : 0), y: y, dir: dir,
+              sp: (175 + level * 15) * rnd(0.85, 1.25), col: palette[(i * 2 + k) % palette.length], w: 132
+            });
+          }
+        });
+        var charX = W / 2, charY = 742, state = 'wait', dashT = 0, minGap = 9999, gt = 0;
+        g.update = function (dt) {
+          gt += dt;
+          cars.forEach(function (car) {
+            car.x += car.dir * car.sp * dt;
+            if (car.dir > 0 && car.x - car.w / 2 > W + 30) car.x = -car.w / 2 - 30;
+            if (car.dir < 0 && car.x + car.w / 2 < -30) car.x = W + car.w / 2 + 30;
+          });
+          if (g.done) return;
+          if (state === 'wait') {
+            g.timeLeft -= dt;
+            if (g.timeLeft <= 0) { g.result = 'miss'; g.reason = 'まごまごしすぎ！'; g.done = true; }
+          } else if (state === 'dash') {
+            dashT += dt;
+            charY = 742 - (742 - 118) * clamp(dashT / 0.5, 0, 1);
+            var hit = false;
+            cars.forEach(function (car) {
+              if (Math.abs(car.y - charY) < 60) {
+                var gap = Math.abs(car.x - charX) - (car.w / 2 + 32);
+                if (gap < minGap) minGap = gap;
+                if (gap < 0) hit = true;
+              }
+            });
+            if (hit) { g.result = 'miss'; g.reason = 'ぶつかった！'; g.done = true; state = 'crash'; }
+            else if (dashT >= 0.5) { g.result = minGap < 44 ? 'perfect' : 'good'; g.done = true; state = 'goal'; }
+          }
+        };
+        g.tap = function () { if (!g.done && state === 'wait') state = 'dash'; };
+        g.draw = function () {
+          /* 対岸の草地 */
+          ctx.fillStyle = '#1d7a4f'; ctx.fillRect(0, 96, W, 66);
+          txt('GOAL', W / 2, 129, 30, '#d9ffe9');
+          /* 水面 */
+          ctx.fillStyle = '#175d75'; ctx.fillRect(0, 162, W, 486);
+          laneY.forEach(function (y, i) {
+            ctx.fillStyle = 'rgba(255,255,255,.5)';
+            for (var x = -40 + (gt * 60 * (i % 2 ? -1 : 1)) % 90; x < W + 40; x += 90) {
+              if (y !== laneY[laneY.length - 1]) ctx.fillRect(x, y + 66, 46, 7);
+            }
+          });
+          ctx.fillStyle = '#3d4a35'; ctx.fillRect(0, 648, W, 60);
+          cars.forEach(function (car) {
+            ctx.save(); ctx.translate(car.x, car.y); ctx.scale(car.dir, 1);
+            /* 航跡 */
+            ctx.fillStyle = 'rgba(255,255,255,.35)';
+            ctx.beginPath(); ctx.moveTo(-car.w / 2 - 36, 0); ctx.lineTo(-car.w / 2, -11); ctx.lineTo(-car.w / 2, 11); ctx.closePath(); ctx.fill();
+            /* 船体 */
+            ctx.fillStyle = car.col;
+            ctx.beginPath(); ctx.moveTo(-car.w / 2, -17); ctx.lineTo(car.w / 2 - 20, -17); ctx.lineTo(car.w / 2, 0); ctx.lineTo(car.w / 2 - 20, 17); ctx.lineTo(-car.w / 2, 17); ctx.closePath(); ctx.fill();
+            ctx.fillStyle = 'rgba(255,255,255,.8)'; rr(-car.w / 4, -11, car.w / 2, 22, 6); ctx.fill();
+            ctx.fillStyle = '#2b2f3a'; circle(car.w / 5, 0, 8); ctx.fill();
+            ctx.restore();
+          });
+          ctx.save();
+          if (state === 'crash') { ctx.translate(charX, charY); ctx.rotate(1.2); drawChar(0, 0, 40, 'dizzy'); }
+          else drawChar(charX, charY, 40, state === 'dash' ? 'scared' : (state === 'goal' ? 'happy' : 'normal'));
+          ctx.restore();
+          if (state === 'wait') txt('タップでダッシュ！', W / 2, 800, 24, '#8f96c9');
+        };
+        return g;
+      }
+
+      /* 3. ランディングネット */
+      function gameHammer(level) {
+        var T = Math.max(0.95, 1.8 - level * 0.065);
+        var groundY = 668;
+        var g = { name: 'ランディングネット', how: 'ネットゾーンに入った瞬間にタップ！', timeLeft: T + 2.2, timeMax: T + 2.2, done: false, result: null, reason: '' };
+        var t = -0.65, caught = false, squashed = false, early = false;
+        function prog() { return clamp(t / T, 0, 1); }
+        function bottomY() { return 216 + prog() * (groundY - 216); }
+        g.update = function (dt) {
+          if (g.done) return;
+          t += dt; g.timeLeft = Math.max(0, T + 2.2 - (t + 0.65));
+          if (prog() >= 1) { g.result = 'miss'; g.reason = 'バラした〜！'; squashed = true; g.done = true; }
+        };
+        g.tap = function () {
+          if (g.done) return;
+          var b = bottomY();
+          if (b >= groundY - 44) { g.result = 'perfect'; caught = true; }
+          else if (b >= groundY - 112) { g.result = 'good'; caught = true; }
+          else { g.result = 'miss'; g.reason = 'はやすぎ！'; early = true; }
+          g.done = true;
+        };
+        g.draw = function () {
+          var b = g.done && early ? groundY : bottomY();
+          var wTop = b - 128;
+          /* キャッチゾーン */
+          ctx.fillStyle = 'rgba(18,181,165,.16)'; ctx.fillRect(40, groundY - 112, W - 80, 112);
+          ctx.fillStyle = 'rgba(255,198,39,.3)'; ctx.fillRect(40, groundY - 44, W - 80, 44);
+          ctx.setLineDash([10, 8]); ctx.strokeStyle = 'rgba(255,255,255,.55)'; ctx.lineWidth = 2.5;
+          ctx.beginPath(); ctx.moveTo(40, groundY - 112); ctx.lineTo(W - 40, groundY - 112); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(40, groundY - 44); ctx.lineTo(W - 40, groundY - 44); ctx.stroke();
+          ctx.setLineDash([]);
+          txt('ネットゾーン', W - 108, groundY - 128, 19, '#9fd8d2');
+          /* 地面 */
+          ctx.fillStyle = '#4a3628'; ctx.fillRect(0, groundY, W, H - groundY);
+          ctx.fillStyle = '#5d8a3c'; ctx.fillRect(0, groundY, W, 14);
+          /* ライン */
+          ctx.strokeStyle = '#9aa3b2'; ctx.lineWidth = 7;
+          ctx.beginPath(); ctx.moveTo(W / 2, -6); ctx.lineTo(W / 2, wTop); ctx.stroke();
+          /* 跳ねて落ちてくるバス */
+          var shake = (!g.done && t < 0) ? Math.sin(performance.now() / 40) * 3 : 0;
+          ctx.save(); ctx.translate(W / 2 + shake, (wTop + b) / 2); ctx.rotate(0.35 + Math.sin((wTop + b) / 70) * 0.1);
+          /* 尾 */
+          ctx.fillStyle = '#5d8a3c';
+          ctx.beginPath(); ctx.moveTo(-84, 0); ctx.lineTo(-118, -34); ctx.lineTo(-118, 34); ctx.closePath(); ctx.fill();
+          /* 体 */
+          var grd = ctx.createLinearGradient(0, -52, 0, 52);
+          grd.addColorStop(0, '#7fae56'); grd.addColorStop(0.55, '#a8c686'); grd.addColorStop(1, '#e8ecd9');
+          ctx.fillStyle = grd;
+          ctx.beginPath(); ctx.ellipse(0, 0, 100, 52, 0, 0, Math.PI * 2); ctx.fill();
+          /* 横縞と側線 */
+          ctx.save(); ctx.beginPath(); ctx.ellipse(0, 0, 100, 52, 0, 0, Math.PI * 2); ctx.clip();
+          ctx.fillStyle = 'rgba(46,84,32,.45)';
+          [-52, -16, 20].forEach(function (sx) { ctx.fillRect(sx, -52, 15, 104); });
+          ctx.fillStyle = 'rgba(46,84,32,.6)'; ctx.fillRect(-100, -5, 200, 10);
+          ctx.restore();
+          ctx.strokeStyle = 'rgba(30,50,20,.5)'; ctx.lineWidth = 3;
+          ctx.beginPath(); ctx.ellipse(0, 0, 100, 52, 0, 0, Math.PI * 2); ctx.stroke();
+          /* 目と口 */
+          ctx.fillStyle = '#fff'; circle(64, -14, 12); ctx.fill();
+          ctx.fillStyle = '#26221c'; circle(67, -14, 6); ctx.fill();
+          ctx.strokeStyle = '#3c5a28'; ctx.lineWidth = 4;
+          ctx.beginPath(); ctx.arc(84, 12, 12, Math.PI * 0.1, Math.PI * 0.7); ctx.stroke();
+          ctx.restore();
+          /* キャラ */
+          if (squashed) {
+            ctx.save(); ctx.translate(W / 2, groundY + 66); ctx.scale(1.25, 0.32); drawChar(0, 0, 52, 'dizzy'); ctx.restore();
+          } else {
+            drawChar(W / 2, groundY + 38, 52, caught ? 'strain' : (g.done ? 'dizzy' : 'scared'), false, 'up');
+          }
+          /* ランディングネット */
+          if (!squashed) {
+            ctx.save();
+            ctx.beginPath(); ctx.ellipse(W / 2, groundY - 16, 66, 17, 0, 0, Math.PI * 2); ctx.clip();
+            ctx.strokeStyle = 'rgba(255,255,255,.45)'; ctx.lineWidth = 1.6;
+            for (var nx = -66; nx <= 66; nx += 12) { ctx.beginPath(); ctx.moveTo(W / 2 + nx, groundY - 34); ctx.lineTo(W / 2 + nx, groundY + 2); ctx.stroke(); }
+            for (var ny2 = -30; ny2 <= 0; ny2 += 8) { ctx.beginPath(); ctx.moveTo(W / 2 - 66, groundY + ny2); ctx.lineTo(W / 2 + 66, groundY + ny2); ctx.stroke(); }
+            ctx.restore();
+            ctx.strokeStyle = '#dfe6ea'; ctx.lineWidth = 5;
+            ctx.beginPath(); ctx.ellipse(W / 2, groundY - 16, 66, 17, 0, 0, Math.PI * 2); ctx.stroke();
+          }
+          if (!g.done) txt('バスが跳ねた…今だ！', W / 2, 806, 24, '#8f96c9');
+        };
+        return g;
+      }
+
+      /* 4. 岩場ジャンプ */
+      function gameJump(level) {
+        var groundY = 596, charX = 208, gapW = 94;
+        var speed = 305 + level * 17;
+        var g = { name: '岩場ジャンプ', how: '切れ目のギリギリでジャンプ！', timeLeft: 6, timeMax: 6, done: false, result: null, reason: '' };
+        var gapX = 780, vy = 0, yOff = 0, jumping = false, takeoffDist = null, fell = false, gt = 0;
+        g.update = function (dt) {
+          gt += dt;
+          if (g.done) return;
+          gapX -= speed * dt;
+          g.timeLeft = Math.max(0, (gapX + gapW) / speed + 1.2);
+          if (jumping) {
+            vy += 2500 * dt; yOff += vy * dt;
+            if (yOff >= 0) {
+              yOff = 0; jumping = false; vy = 0;
+              if (gapX < charX + 24 && gapX + gapW > charX - 24) { fell = true; g.result = 'miss'; g.reason = '落ちた〜！'; g.done = true; }
+            }
+          } else if (gapX < charX + 24 && gapX + gapW > charX - 24) {
+            fell = true; g.result = 'miss'; g.reason = '落ちた〜！'; g.done = true;
+          }
+          if (!g.done && gapX + gapW < charX - 44) {
+            g.result = (takeoffDist !== null && takeoffDist <= 58) ? 'perfect' : 'good';
+            g.done = true;
+          }
+        };
+        g.tap = function () {
+          if (g.done || jumping) return;
+          jumping = true; vy = -1090; takeoffDist = gapX - charX;
+        };
+        g.draw = function () {
+          /* 空の雲 */
+          ctx.fillStyle = 'rgba(255,255,255,.14)';
+          [[120 - (gt * 30) % 300, 130], [520, 90], [330 - (gt * 18) % 200, 190]].forEach(function (c) {
+            circle(c[0], c[1], 26); ctx.fill(); circle(c[0] + 30, c[1] + 4, 20); ctx.fill(); circle(c[0] - 30, c[1] + 5, 18); ctx.fill();
+          });
+          /* 地面 */
+          ctx.fillStyle = '#54382a'; ctx.fillRect(0, groundY, W, H - groundY);
+          ctx.fillStyle = '#69a84f'; ctx.fillRect(0, groundY, W, 16);
+          /* 割れ目（穴） */
+          ctx.fillStyle = '#0d4a66';
+          ctx.fillRect(gapX, groundY, gapW, H - groundY);
+          ctx.fillStyle = 'rgba(160,220,255,.4)';
+          ctx.fillRect(gapX, groundY, 4, H - groundY); ctx.fillRect(gapX + gapW - 4, groundY, 4, H - groundY);
+          txt('⚠', gapX + gapW / 2, groundY - 44, 34, '#ffc627');
+          /* キャラ */
+          var cy = groundY - 70 + yOff + (fell ? 120 : 0);
+          ctx.save(); ctx.translate(charX, cy); if (fell) ctx.rotate(0.9);
+          drawChar(0, 0, 46, fell ? 'dizzy' : (g.done ? 'happy' : 'normal'));
+          ctx.restore();
+          if (!g.done) txt('タップでジャンプ！', W / 2, 806, 24, '#8f96c9');
+        };
+        return g;
+      }
+
+      /* 5. 遠投チャレンジ */
+      function gameCannon(level) {
+        var cx = 108, cy = 652, seaY = 706;
+        var islandCx = cx + rnd(305, 415), islandW = 104;
+        var g = { name: '遠投チャレンジ', how: '角度が合った瞬間にキャスト！島まで届け', timeLeft: 8, timeMax: 8, done: false, result: null, reason: '' };
+        var t = 0, fired = false, px = 0, py = 0, vx = 0, vy = 0, splash = false;
+        function angDeg() { return 47.5 + 22.5 * Math.sin(t * (1.5 + level * 0.1)); }
+        g.update = function (dt) {
+          if (!fired) {
+            t += dt;
+            if (!g.done) { g.timeLeft -= dt; if (g.timeLeft <= 0) { g.result = 'miss'; g.reason = '時間切れ！'; g.done = true; } }
+            return;
+          }
+          if (g.done) return;
+          vy += 950 * dt; px += vx * dt; py += vy * dt;
+          if (py >= seaY - 8) {
+            if (Math.abs(px - islandCx) <= islandW / 2) g.result = Math.abs(px - islandCx) <= islandW / 6 ? 'perfect' : 'good';
+            else { g.result = 'miss'; g.reason = '湖にドボン！'; splash = true; }
+            g.done = true;
+          }
+          if (px > W + 60) { g.result = 'miss'; g.reason = '飛びすぎた！'; g.done = true; }
+        };
+        g.tap = function () {
+          if (g.done || fired) return;
+          fired = true;
+          var a = angDeg() * Math.PI / 180, v = 668;
+          vx = v * Math.cos(a); vy = -v * Math.sin(a);
+          px = cx + Math.cos(a) * 74; py = cy - Math.sin(a) * 74;
+        };
+        g.draw = function () {
+          /* 海 */
+          var grd = ctx.createLinearGradient(0, seaY, 0, H);
+          grd.addColorStop(0, '#1b6fa8'); grd.addColorStop(1, '#0e4470');
+          ctx.fillStyle = grd; ctx.fillRect(0, seaY, W, H - seaY);
+          ctx.strokeStyle = 'rgba(255,255,255,.35)'; ctx.lineWidth = 3;
+          for (var i = 0; i < 5; i++) {
+            var wy = seaY + 22 + i * 24;
+            ctx.beginPath();
+            for (var x = 0; x <= W; x += 16) ctx.lineTo(x, wy + Math.sin(x / 34 + t * 3 + i) * 3);
+            ctx.stroke();
+          }
+          /* 島 */
+          ctx.fillStyle = '#e8cf8f';
+          ctx.beginPath(); ctx.ellipse(islandCx, seaY + 8, islandW / 2 + 16, 26, 0, Math.PI, 0); ctx.fill();
+          ctx.fillStyle = '#69a84f';
+          ctx.beginPath(); ctx.ellipse(islandCx, seaY + 2, islandW / 2, 15, 0, Math.PI, 0); ctx.fill();
+          ctx.strokeStyle = '#8a6a3b'; ctx.lineWidth = 6;
+          ctx.beginPath(); ctx.moveTo(islandCx, seaY - 2); ctx.lineTo(islandCx, seaY - 66); ctx.stroke();
+          ctx.fillStyle = '#ff4b33';
+          ctx.beginPath(); ctx.moveTo(islandCx, seaY - 66); ctx.lineTo(islandCx + 38, seaY - 54); ctx.lineTo(islandCx, seaY - 42); ctx.closePath(); ctx.fill();
+          txt('島', islandCx, seaY + 44, 20, '#bfe3ff');
+          /* 台地 */
+          ctx.fillStyle = '#5d4a36'; rr(28, cy + 26, 170, 60, 12); ctx.fill();
+          /* キャスト台 */
+          var a = angDeg() * Math.PI / 180;
+          ctx.save(); ctx.translate(cx, cy); ctx.rotate(-a);
+          ctx.fillStyle = '#39415e'; rr(0, -21, 96, 42, 16); ctx.fill();
+          ctx.fillStyle = '#232a45'; rr(78, -24, 22, 48, 8); ctx.fill();
+          ctx.restore();
+          circle(cx, cy + 8, 34); ctx.fillStyle = '#232a45'; ctx.fill();
+          circle(cx, cy + 8, 15); ctx.fillStyle = '#4a5578'; ctx.fill();
+          /* 角度表示 */
+          txt(Math.round(angDeg()) + '°', 84, cy - 108, 26, '#ffc627');
+          /* キャラ */
+          if (!fired) drawChar(cx + Math.cos(a) * 108, cy - Math.sin(a) * 108, 27, 'scared');
+          else {
+            if (splash) {
+              ctx.fillStyle = 'rgba(255,255,255,.85)';
+              circle(px - 16, seaY - 6, 10); ctx.fill(); circle(px + 14, seaY - 10, 13); ctx.fill(); circle(px, seaY - 18, 8); ctx.fill();
+            } else drawChar(px, py, 27, g.done ? (g.result === 'miss' ? 'dizzy' : 'happy') : 'scared');
+          }
+          if (!fired && !g.done) txt('タップでキャスト！', W / 2, 806, 24, '#8f96c9');
+        };
+        return g;
+      }
+
+      /* 6. バス釣り */
+      function gameFishing(level) {
+        var waterY = 296, boatX = W / 2;
+        var zoneW = Math.max(88, 160 - level * 6);
+        var g = { name: 'バス釣り', how: 'バスが真下に来た瞬間に引き上げろ！', timeLeft: 8, timeMax: 8, done: false, result: null, reason: '' };
+        var fx = rnd(120, 600), dir = Math.random() < 0.5 ? -1 : 1;
+        var speed = 205 + level * 19, t = 0, caught = false;
+        g.update = function (dt) {
+          t += dt;
+          if (g.done) return;
+          fx += dir * speed * dt;
+          if (fx < 74) { fx = 74; dir = 1; }
+          if (fx > W - 74) { fx = W - 74; dir = -1; }
+          g.timeLeft -= dt;
+          if (g.timeLeft <= 0) { g.result = 'miss'; g.reason = '時間切れ！'; g.done = true; }
+        };
+        g.tap = function () {
+          if (g.done) return;
+          var d = Math.abs(fx - boatX);
+          if (d <= zoneW / 6) { g.result = 'perfect'; caught = true; }
+          else if (d <= zoneW / 2) { g.result = 'good'; caught = true; }
+          else { g.result = 'miss'; g.reason = 'にげられた！'; }
+          g.done = true;
+        };
+        g.draw = function () {
+          var fishY = 566 + Math.sin(t * 2.1) * 18;
+          /* 水 */
+          var grd = ctx.createLinearGradient(0, waterY, 0, H);
+          grd.addColorStop(0, '#2b8ac6'); grd.addColorStop(1, '#14507e');
+          ctx.fillStyle = grd; ctx.fillRect(0, waterY, W, H - waterY);
+          /* ゾーン */
+          ctx.fillStyle = 'rgba(255,255,255,.13)';
+          ctx.fillRect(boatX - zoneW / 2, waterY, zoneW, H - waterY);
+          ctx.fillStyle = 'rgba(255,198,39,.35)';
+          ctx.fillRect(boatX - zoneW / 6, waterY, zoneW / 3, H - waterY);
+          ctx.setLineDash([9, 8]); ctx.strokeStyle = 'rgba(255,255,255,.6)'; ctx.lineWidth = 2.5;
+          ctx.beginPath(); ctx.moveTo(boatX - zoneW / 2, waterY); ctx.lineTo(boatX - zoneW / 2, H); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(boatX + zoneW / 2, waterY); ctx.lineTo(boatX + zoneW / 2, H); ctx.stroke();
+          ctx.setLineDash([]);
+          /* 海底 */
+          ctx.fillStyle = '#0d3a5c'; ctx.fillRect(0, H - 44, W, 44);
+          /* 泡 */
+          ctx.fillStyle = 'rgba(255,255,255,.4)';
+          for (var i = 0; i < 6; i++) { circle(90 + i * 105, H - 90 - ((t * 40 + i * 67) % 200), 5 + (i % 3) * 2); ctx.fill(); }
+          /* 魚 */
+          ctx.save(); ctx.translate(caught ? boatX : fx, caught ? waterY - 58 : fishY); ctx.scale(dir, 1);
+          if (caught) ctx.rotate(-0.5);
+          ctx.fillStyle = '#7fae56';
+          ctx.beginPath(); ctx.ellipse(0, 0, 48, 25, 0, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath(); ctx.moveTo(-44, 0); ctx.lineTo(-70, -20); ctx.lineTo(-70, 20); ctx.closePath(); ctx.fill();
+          ctx.save(); ctx.beginPath(); ctx.ellipse(0, 0, 48, 25, 0, 0, Math.PI * 2); ctx.clip();
+          ctx.fillStyle = 'rgba(46,84,32,.55)'; ctx.fillRect(-48, -4, 96, 8);
+          ctx.fillStyle = 'rgba(46,84,32,.4)'; ctx.fillRect(-18, -25, 9, 50); ctx.fillRect(8, -25, 9, 50);
+          ctx.restore();
+          ctx.fillStyle = '#eef3df';
+          ctx.beginPath(); ctx.ellipse(6, 13, 30, 10, 0, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = '#fff'; circle(24, -6, 9); ctx.fill();
+          ctx.fillStyle = '#26221c'; circle(26, -6, 4.5); ctx.fill();
+          ctx.strokeStyle = 'rgba(46,84,32,.6)'; ctx.lineWidth = 3;
+          ctx.beginPath(); ctx.moveTo(-8, -22); ctx.quadraticCurveTo(4, -6, -8, 22); ctx.stroke();
+          ctx.restore();
+          /* 船 */
+          ctx.fillStyle = '#8a5632';
+          ctx.beginPath(); ctx.moveTo(boatX - 96, waterY - 6); ctx.lineTo(boatX + 96, waterY - 6); ctx.lineTo(boatX + 66, waterY + 30); ctx.lineTo(boatX - 66, waterY + 30); ctx.closePath(); ctx.fill();
+          ctx.fillStyle = '#a96b3d'; ctx.fillRect(boatX - 96, waterY - 14, 192, 10);
+          /* 釣り人と竿 */
+          drawChar(boatX - 16, waterY - 48, 34, caught ? 'happy' : (g.done ? 'dizzy' : 'normal'));
+          ctx.strokeStyle = '#5d4028'; ctx.lineWidth = 5; ctx.lineCap = 'round';
+          ctx.beginPath(); ctx.moveTo(boatX + 8, waterY - 52); ctx.lineTo(boatX + 58, waterY - 108); ctx.stroke();
+          ctx.strokeStyle = 'rgba(255,255,255,.75)'; ctx.lineWidth = 2;
+          ctx.beginPath(); ctx.moveTo(boatX + 58, waterY - 108); ctx.lineTo(boatX, caught ? waterY - 34 : waterY + 66); ctx.stroke();
+          if (!g.done) txt('タップで引き上げ！', W / 2, 806, 24, '#cfe8ff');
+        };
+        return g;
+      }
+
+      /* 7. ねらい撃ちキャスト */
+      function gameShoot(level) {
+        var g = { name: 'ねらい撃ちキャスト', how: 'ガードの逆を突け！隅だとPERFECT', timeLeft: 8, timeMax: 8, done: false, result: null, reason: '' };
+        var kx = W / 2, kdir = 1, kSpeed = 255 + level * 21;
+        var cur = W / 2, cdir = -1, cSpeed = 435 + level * 27;
+        var shooting = false, ballT = 0, ballX = W / 2, ballY = 716, targetX = 0;
+        g.update = function (dt) {
+          kx += kdir * kSpeed * dt;
+          if (kx < 168) { kx = 168; kdir = 1; } if (kx > W - 168) { kx = W - 168; kdir = -1; }
+          if (!shooting && !g.done) {
+            cur += cdir * cSpeed * dt;
+            if (cur < 108) { cur = 108; cdir = 1; } if (cur > W - 108) { cur = W - 108; cdir = -1; }
+            g.timeLeft -= dt;
+            if (g.timeLeft <= 0) { g.result = 'miss'; g.reason = '時間切れ！'; g.done = true; }
+          }
+          if (shooting && !g.done) {
+            ballT += dt / 0.26;
+            var p = clamp(ballT, 0, 1);
+            ballX = W / 2 + (targetX - W / 2) * p;
+            ballY = 716 - (716 - 384) * p;
+            if (ballT >= 1) {
+              if (Math.abs(ballX - kx) < 56) { g.result = 'miss'; g.reason = '止められた！'; }
+              else g.result = (ballX < 178 || ballX > W - 178) ? 'perfect' : 'good';
+              g.done = true;
+            }
+          }
+        };
+        g.tap = function () { if (g.done || shooting) return; shooting = true; targetX = cur; };
+        g.draw = function () {
+          /* 観客席 */
+          ctx.fillStyle = '#1c2450'; ctx.fillRect(0, 60, W, 130);
+          var dots = ['#ffc627', '#ff8fa3', '#9fd8ff', '#b7f0c9'];
+          for (var i = 0; i < 60; i++) {
+            ctx.fillStyle = dots[i % 4]; ctx.globalAlpha = 0.5;
+            circle(24 + (i * 61) % (W - 30), 84 + (i * 37) % 96, 5); ctx.fill();
+          }
+          ctx.globalAlpha = 1;
+          /* ピッチ */
+          ctx.fillStyle = '#3f9e4d'; ctx.fillRect(0, 190, W, H - 190);
+          ctx.fillStyle = 'rgba(255,255,255,.14)'; ctx.fillRect(0, 190, W, 60); ctx.fillRect(0, 380, W, 60); ctx.fillRect(0, 570, W, 60);
+          /* ゴール */
+          ctx.strokeStyle = 'rgba(255,255,255,.4)'; ctx.lineWidth = 2;
+          for (var gx = 100; gx <= 620; gx += 32) { ctx.beginPath(); ctx.moveTo(gx, 226); ctx.lineTo(gx, 496); ctx.stroke(); }
+          for (var gy = 226; gy <= 496; gy += 30) { ctx.beginPath(); ctx.moveTo(92, gy); ctx.lineTo(628, gy); ctx.stroke(); }
+          ctx.strokeStyle = '#fff'; ctx.lineWidth = 9;
+          ctx.beginPath(); ctx.moveTo(92, 500); ctx.lineTo(92, 222); ctx.lineTo(628, 222); ctx.lineTo(628, 500); ctx.stroke();
+          /* キーパー */
+          ctx.strokeStyle = '#ffd23f'; ctx.lineWidth = 12; ctx.lineCap = 'round';
+          ctx.beginPath(); ctx.moveTo(kx - 30, 400); ctx.lineTo(kx - 74, 356); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(kx + 30, 400); ctx.lineTo(kx + 74, 356); ctx.stroke();
+          ctx.fillStyle = '#fff'; circle(kx - 78, 352, 13); ctx.fill(); circle(kx + 78, 352, 13); ctx.fill();
+          drawChar(kx, 392, 42, g.done && g.result !== 'miss' ? 'dizzy' : 'strain', false, 'none');
+          /* 照準 */
+          if (!shooting) {
+            ctx.strokeStyle = '#ffc627'; ctx.lineWidth = 5;
+            circle(cur, 384, 26); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(cur, 344); ctx.lineTo(cur, 424); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(cur - 40, 384); ctx.lineTo(cur + 40, 384); ctx.stroke();
+            txt('ねらい', cur, 300, 21, '#ffc627');
+          }
+          /* ボール */
+          var br = shooting ? 30 - 12 * clamp(ballT, 0, 1) : 30;
+          circle(ballX, ballY, br); ctx.fillStyle = '#fff'; ctx.fill();
+          ctx.strokeStyle = '#c9ccd6'; ctx.lineWidth = 2.5; ctx.stroke();
+          ctx.fillStyle = '#2b2f3a';
+          circle(ballX, ballY, br * 0.3); ctx.fill();
+          circle(ballX - br * 0.55, ballY - br * 0.4, br * 0.18); ctx.fill();
+          circle(ballX + br * 0.55, ballY + br * 0.35, br * 0.18); ctx.fill();
+          if (!shooting && !g.done) txt('タップでシュート！', W / 2, 806, 24, '#d9ffe9');
+        };
+        return g;
+      }
+
+      /* 8. 迫るクランク（前後：真正面から迫ってくる） */
+      function gameDodge(level) {
+        var T = Math.max(1.15, 2.1 - level * 0.075);
+        var g = { name: '迫るクランク', how: '目の前まで来たらタップでよけろ！', timeLeft: T + 1.6, timeMax: T + 1.6, done: false, result: null, reason: '' };
+        var t = -0.55, gt = 0, dodged = false, hit = false;
+        var dodgeSide = Math.random() < 0.5 ? -1 : 1;
+        function p() { return clamp(t / T, 0, 1); }
+        function ballR() { var q = p(); return 8 + 158 * q * q; }
+        function ballY() { return 296 + 196 * p(); }
+        g.update = function (dt) {
+          gt += dt;
+          if (g.done) return;
+          t += dt;
+          g.timeLeft = Math.max(0, T + 1.6 - (t + 0.55));
+          if (p() >= 1) { hit = true; g.result = 'miss'; g.reason = '直撃した！'; g.done = true; }
+        };
+        g.tap = function () {
+          if (g.done) return;
+          var r = ballR();
+          if (r >= 108 && r <= 140) { g.result = 'perfect'; dodged = true; }
+          else if (r >= 80 && r <= 158) { g.result = 'good'; dodged = true; }
+          else { g.result = 'miss'; g.reason = 'はやすぎ！'; hit = true; }
+          g.done = true;
+        };
+        g.draw = function () {
+          var r = ballR(), by = ballY(), bx = W / 2;
+          /* 奥行きのある地面（消失点へ集まるライン） */
+          ctx.strokeStyle = 'rgba(255,255,255,.15)'; ctx.lineWidth = 3;
+          for (var i = -3; i <= 3; i++) {
+            ctx.beginPath(); ctx.moveTo(W / 2 + i * 24, 292); ctx.lineTo(W / 2 + i * 185, H); ctx.stroke();
+          }
+          for (var k = 0; k < 5; k++) {
+            var lq = (k / 5 + gt * 0.22) % 1;
+            var ly = 292 + 520 * lq * lq;
+            var half = 26 + 560 * lq;
+            ctx.strokeStyle = 'rgba(255,255,255,' + (0.05 + lq * 0.13).toFixed(3) + ')';
+            ctx.lineWidth = 2 + lq * 3;
+            ctx.beginPath(); ctx.moveTo(W / 2 - half, ly); ctx.lineTo(W / 2 + half, ly); ctx.stroke();
+          }
+          if (!g.done) txt('金のリングの大きさで よけろ！', W / 2, 128, 26, '#ffc627');
+          /* キャラ（正面） */
+          var cxp = W / 2 + (dodged ? dodgeSide * 172 : 0);
+          var mood = hit ? 'dizzy' : (dodged ? 'happy' : (r > 66 ? 'scared' : 'normal'));
+          drawChar(cxp, 656, 58, mood);
+          /* PERFECTの大きさを示すリング */
+          if (!g.done && t > 0) {
+            ctx.setLineDash([12, 10]);
+            ctx.strokeStyle = 'rgba(255,198,39,.9)'; ctx.lineWidth = 4;
+            circle(bx, by, 124); ctx.stroke();
+            ctx.setLineDash([]);
+          }
+          /* ボールと影 */
+          if (t > 0) {
+            ctx.fillStyle = 'rgba(0,0,0,.3)';
+            ctx.beginPath(); ctx.ellipse(bx, by + r * 0.95 + 24, r * 0.85, Math.max(4, r * 0.16), 0, 0, Math.PI * 2); ctx.fill();
+            var grd = ctx.createRadialGradient(bx - r * 0.3, by - r * 0.3, r * 0.12, bx, by, r * 1.1);
+            grd.addColorStop(0, '#ffe066'); grd.addColorStop(1, '#e07b24');
+            ctx.beginPath(); ctx.ellipse(bx, by, r * 1.08, r * 0.75, 0, 0, Math.PI * 2); ctx.fillStyle = grd; ctx.fill();
+            ctx.strokeStyle = 'rgba(90,40,0,.5)'; ctx.lineWidth = Math.max(2, r * 0.05); ctx.stroke();
+            /* リップ・フック・目 */
+            ctx.fillStyle = 'rgba(255,255,255,.75)';
+            ctx.beginPath(); ctx.moveTo(bx - r * 1.05, by + r * 0.08); ctx.lineTo(bx - r * 1.34, by + r * 0.38); ctx.lineTo(bx - r * 0.9, by + r * 0.44); ctx.closePath(); ctx.fill();
+            ctx.fillStyle = '#3a3f4a';
+            circle(bx - r * 0.3, by + r * 0.78, Math.max(2, r * 0.09)); ctx.fill();
+            circle(bx + r * 0.45, by + r * 0.78, Math.max(2, r * 0.09)); ctx.fill();
+            ctx.fillStyle = '#26221c'; circle(bx - r * 0.72, by - r * 0.1, Math.max(2, r * 0.1)); ctx.fill();
+            ctx.fillStyle = 'rgba(255,255,255,.55)';
+            circle(bx - r * 0.34, by - r * 0.32, Math.max(2, r * 0.12)); ctx.fill();
+          }
+          if (!g.done) txt('タップでよける！', W / 2, 812, 24, '#8f96c9');
+        };
+        return g;
+      }
+
+      /* 9. 流木ダッシュ（前後：手前に向かって走る） */
+      function gameDash(level) {
+        var T = Math.max(1.35, 2.3 - level * 0.08);
+        var g = { name: '流木ダッシュ', how: '目の前まで来たらタップでジャンプ！', timeLeft: T + 1.8, timeMax: T + 1.8, done: false, result: null, reason: '' };
+        var t = -0.5, gt = 0, jumping = false, crashed = false, yOff = 0, vy = 0;
+        function d() { return clamp(t / T, 0, 1); }
+        function hurdleY(q) { return 306 + 430 * q * q; }
+        g.update = function (dt) {
+          gt += dt; t += dt;
+          if (jumping) {
+            vy += 2500 * dt; yOff += vy * dt;
+            if (yOff >= 0) { yOff = 0; jumping = false; vy = 0; }
+          }
+          if (g.done) return;
+          g.timeLeft = Math.max(0, T + 1.8 - (t + 0.5));
+          if (d() >= 1) { crashed = true; g.result = 'miss'; g.reason = 'ぶつかった！'; g.done = true; }
+        };
+        g.tap = function () {
+          if (g.done || jumping) return;
+          jumping = true; vy = -1080;
+          var q = d();
+          if (q >= 0.84 && q <= 0.97) g.result = 'perfect';
+          else if (q >= 0.7) g.result = 'good';
+          else { g.result = 'miss'; g.reason = 'はやすぎ！'; }
+          g.done = true;
+        };
+        g.draw = function () {
+          var horizon = 306;
+          /* 川の流れ（手前が広い台形） */
+          ctx.fillStyle = '#175d75';
+          ctx.beginPath();
+          ctx.moveTo(W / 2 - 56, horizon); ctx.lineTo(W / 2 + 56, horizon);
+          ctx.lineTo(W + 30, H); ctx.lineTo(-30, H); ctx.closePath(); ctx.fill();
+          ctx.strokeStyle = '#ffc627'; ctx.lineWidth = 5;
+          ctx.beginPath(); ctx.moveTo(W / 2 - 56, horizon); ctx.lineTo(-30, H); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(W / 2 + 56, horizon); ctx.lineTo(W + 30, H); ctx.stroke();
+          /* 流れてくる横ライン */
+          for (var k = 0; k < 5; k++) {
+            var lq = (k / 5 + gt * 0.5) % 1;
+            var ly = horizon + 500 * lq * lq;
+            var half = 56 + (W / 2 + 30 - 56) * lq;
+            ctx.strokeStyle = 'rgba(255,255,255,' + (0.08 + lq * 0.2).toFixed(3) + ')';
+            ctx.lineWidth = 3 + lq * 3;
+            ctx.beginPath(); ctx.moveTo(W / 2 - half, ly); ctx.lineTo(W / 2 + half, ly); ctx.stroke();
+          }
+          /* ジャンプゾーン */
+          var z1 = hurdleY(0.7), z2 = hurdleY(1);
+          var hz1 = 56 + (W / 2 + 30 - 56) * 0.7, hz2 = W / 2 + 30;
+          ctx.fillStyle = 'rgba(255,198,39,.13)';
+          ctx.beginPath();
+          ctx.moveTo(W / 2 - hz1, z1); ctx.lineTo(W / 2 + hz1, z1);
+          ctx.lineTo(W / 2 + hz2, z2); ctx.lineTo(W / 2 - hz2, z2); ctx.closePath(); ctx.fill();
+          /* 流木 */
+          var q = d();
+          if (t > 0) {
+            var hy = hurdleY(q);
+            var hw = 46 + 400 * q, hh = 16 + 104 * q, top = hy - hh;
+            ctx.fillStyle = 'rgba(0,0,0,.3)';
+            ctx.beginPath(); ctx.ellipse(W / 2, hy + 8, hw * 0.55, 8 + 10 * q, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#4a3625';
+            ctx.fillRect(W / 2 - hw * 0.36, top + hh * 0.5, hw * 0.09, hh * 0.5);
+            ctx.fillRect(W / 2 + hw * 0.27, top + hh * 0.5, hw * 0.09, hh * 0.5);
+            ctx.save(); rr(W / 2 - hw / 2, top, hw, hh * 0.52, 8); ctx.clip();
+            ctx.fillStyle = '#9a7748'; ctx.fillRect(W / 2 - hw / 2, top, hw, hh * 0.52);
+            ctx.fillStyle = '#6e5233';
+            var sw = hw / 6;
+            for (var si = 0; si < 6; si += 2) ctx.fillRect(W / 2 - hw / 2 + si * sw, top, sw, hh * 0.52);
+            ctx.restore();
+            ctx.strokeStyle = '#4a3625'; ctx.lineWidth = 3; rr(W / 2 - hw / 2, top, hw, hh * 0.52, 8); ctx.stroke();
+            if (q > 0.35) {
+              ctx.fillStyle = Math.sin(gt * 10) > 0 ? '#ffc627' : '#8a6d1f';
+              circle(W / 2, top - 6 - 6 * q, 4 + 6 * q); ctx.fill();
+            }
+          }
+          /* キャラ（正面・手前に向かって走る） */
+          var bob = (!jumping && !crashed) ? Math.sin(gt * 13) * 5 : 0;
+          var cyp = 664 + bob + yOff;
+          if (crashed) {
+            ctx.save(); ctx.translate(W / 2, cyp); ctx.rotate(1.1); drawChar(0, 0, 54, 'dizzy'); ctx.restore();
+          } else {
+            var mood2 = g.done ? (g.result === 'miss' ? 'dizzy' : 'happy') : (q > 0.45 ? 'scared' : 'normal');
+            drawChar(W / 2, cyp, 54, mood2);
+          }
+          if (!g.done) txt('タップでジャンプ！', W / 2, 812, 24, '#d9e2ff');
+        };
+        return g;
+      }
+
+      /* ボーナスゲーム */
+      function gameBonus() {
+        var values = [100, 300, 1000, 300, 100];
+        var names = ['コイン', '大コイン', 'JACKPOT', '大コイン', 'コイン'];
+        var g = { name: 'ボーナスステージ', how: '光をジャックポットで止めろ！', timeLeft: 10, timeMax: 10, done: false, result: null, reason: '', bonusPts: 0 };
+        var t = 0, stoppedAt = -1;
+        function curIdx() { return Math.floor(t / 0.085) % 5; }
+        function stop() {
+          stoppedAt = curIdx();
+          g.bonusPts = values[stoppedAt];
+          g.result = 'bonus';
+          g.reason = stoppedAt === 2 ? 'ジャックポット!!' : names[stoppedAt] + ' ゲット';
+          g.done = true;
+        }
+        g.update = function (dt) {
+          if (g.done) return;
+          t += dt; g.timeLeft -= dt;
+          if (g.timeLeft <= 0) stop();
+        };
+        g.tap = function () { if (!g.done) stop(); };
+        g.draw = function () {
+          txt('★ ボーナスステージ ★', W / 2, 168, 34, '#ffc627');
+          var active = g.done ? stoppedAt : curIdx();
+          for (var i = 0; i < 5; i++) {
+            var pw = i === 2 ? 128 : 106;
+            var x = 66 + i * 122 - pw / 2 + (i === 2 ? -8 : 0);
+            var y = 300, ph = 190;
+            var on = i === active;
+            ctx.fillStyle = on ? '#ffc627' : '#232a52';
+            rr(x, y, pw, ph, 18); ctx.fill();
+            ctx.strokeStyle = on ? '#fff2c0' : 'rgba(255,255,255,.25)'; ctx.lineWidth = on ? 5 : 2.5;
+            rr(x, y, pw, ph, 18); ctx.stroke();
+            var cxp = x + pw / 2;
+            if (i === 2) {
+              /* 星 */
+              ctx.fillStyle = on ? '#fff3b0' : '#8f96c9';
+              ctx.beginPath();
+              for (var s = 0; s < 10; s++) {
+                var ang = -Math.PI / 2 + s * Math.PI / 5;
+                var rad = s % 2 === 0 ? 34 : 15;
+                var vx = cxp + Math.cos(ang) * rad, vy = y + 62 + Math.sin(ang) * rad;
+                if (s === 0) ctx.moveTo(vx, vy); else ctx.lineTo(vx, vy);
+              }
+              ctx.closePath(); ctx.fill();
+            } else {
+              circle(cxp, y + 62, 27); ctx.fillStyle = on ? '#fff3b0' : '#8f96c9'; ctx.fill();
+              txt('¥', cxp, y + 63, 30, on ? '#b07d00' : '#232a52');
+            }
+            txt(names[i], cxp, y + 122, i === 2 ? 17 : 16, on ? '#5c3d00' : '#cfd4ff');
+            txt(values[i] + '点', cxp, y + 156, 21, on ? '#5c3d00' : '#fff');
+          }
+          drawChar(W / 2, 640, 66, g.done ? 'happy' : 'normal');
+          if (!g.done) txt('タップでストップ！', W / 2, 762, 24, '#8f96c9');
+        };
+        return g;
+      }
+
+      var factories = [gameStopBar, gameRoad, gameHammer, gameJump, gameCannon, gameFishing, gameShoot, gameDodge, gameDash];
+
+      /* ================= ゲーム進行 ================= */
+      var S = {
+        mode: 'title', score: 0, combo: 0, maxCombo: 0, lives: 3,
+        stage: 0, best: 0, game: null, isBonus: false, bonusNext: false,
+        lastIdx: -1, introT: 0, resultT: 0, gt: 0
+      };
+      var $ = function (id) { return document.getElementById(id); };
+      var hudScore = $('hudScore'), hudCombo = $('hudCombo'), hudMult = $('hudMult'),
+        hudStage = $('hudStage'), hudHearts = $('hudHearts'), tapBtn = $('tapBtn');
+
+      function mult() { return Math.min(5, 1 + Math.floor(S.combo / 4)); }
+      function updateHUD() {
+        hudScore.textContent = S.score.toLocaleString();
+        hudCombo.textContent = S.combo;
+        hudMult.textContent = S.combo >= 4 ? '×' + mult() : '';
+        hudStage.textContent = S.mode === 'title' ? '-' : (S.isBonus ? 'B' : S.stage);
+        var h = '';
+        for (var i = 0; i < 3; i++) h += i < S.lives ? '♥' : '<span class="lost">♥</span>';
+        hudHearts.innerHTML = h;
+        tapBtn.classList.toggle('pulse', S.mode === 'play');
+        tapBtn.classList.toggle('idle', S.mode !== 'play');
+      }
+      function showOverlay(id) {
+        ['ovTitle', 'ovIntro', 'ovResult', 'ovOver'].forEach(function (o) {
+          $(o).classList.toggle('show', o === id);
+        });
+      }
+      function pickGame() {
+        var idx;
+        do { idx = Math.floor(Math.random() * factories.length); } while (idx === S.lastIdx);
+        S.lastIdx = idx;
+        return factories[idx](Math.min(S.stage, 14));
+      }
+      function nextStage() {
+        if (S.bonusNext) {
+          S.bonusNext = false; S.isBonus = true; S.game = gameBonus();
+        } else {
+          S.isBonus = false; S.stage++; S.game = pickGame();
+        }
+        $('introTag').textContent = S.isBonus ? 'BONUS' : 'STAGE ' + S.stage;
+        $('introName').textContent = S.game.name;
+        $('introHow').textContent = S.game.how;
+        S.mode = 'intro'; S.introT = 1.6;
+        showOverlay('ovIntro');
+        sndCount();
+        updateHUD();
+      }
+      function startPlay() {
+        S.mode = 'play';
+        showOverlay(null);
+        updateHUD();
+      }
+      function finishStage() {
+        var g = S.game, r = g.result, pts = 0, sub = '', big = '', cls = '';
+        if (r === 'bonus') {
+          pts = g.bonusPts; S.score += pts;
+          big = 'ボーナスGET!'; cls = 'bonus'; sub = '+' + pts + '点';
+          sndBonus();
+        } else if (r === 'perfect' || r === 'good') {
+          S.combo++; S.maxCombo = Math.max(S.maxCombo, S.combo);
+          var base = r === 'perfect' ? 300 : 100;
+          pts = base * mult(); S.score += pts;
+          big = r === 'perfect' ? 'PERFECT!' : '成功！'; cls = r;
+          sub = '+' + pts + '点' + (mult() > 1 ? '（コンボ×' + mult() + '）' : '');
+          if (!S.isBonus && S.stage % 5 === 0) S.bonusNext = true;
+          if (r === 'perfect') sndPerfect(); else sndGood();
+        } else {
+          S.combo = 0; S.lives--;
+          big = 'ミス…'; cls = 'miss'; sub = 'ライフ −1';
+          sndMiss();
+          if (navigator.vibrate) navigator.vibrate(120);
+        }
+        var rb = $('resultBig');
+        rb.textContent = big; rb.className = 'ov-result-big pop ' + cls;
+        $('resultSub').textContent = sub;
+        $('resultReason').textContent = g.reason || '';
+        S.mode = 'result'; S.resultT = 1.35;
+        showOverlay('ovResult');
+        updateHUD();
+      }
+      function gameOver() {
+        S.best = Math.max(S.best, S.score);
+        S.mode = 'over';
+        $('overScore').textContent = 'SCORE ' + S.score.toLocaleString();
+        $('overStage').textContent = S.stage;
+        $('overCombo').textContent = S.maxCombo;
+        $('overBest').textContent = S.best.toLocaleString();
+        showOverlay('ovOver');
+        updateHUD();
+      }
+      function startRun() {
+        ac();
+        S.score = 0; S.combo = 0; S.maxCombo = 0; S.lives = 3;
+        S.stage = 0; S.lastIdx = -1; S.bonusNext = false;
+        nextStage();
+      }
+      function doTap() {
+        if (S.mode === 'intro') { startPlay(); return; }
+        if (S.mode !== 'play' || !S.game) return;
+        sndTap();
+        S.game.tap();
+        if (S.game.done) finishStage();
+      }
+
+      /* ================= メインループ ================= */
+      var last = performance.now();
+      function frame(now) {
+        requestAnimationFrame(frame);
+        var dt = Math.min((now - last) / 1000, 0.05);
+        last = now;
+        S.gt += dt;
+        if (S.mode === 'intro') {
+          S.introT -= dt;
+          if (S.introT <= 0) startPlay();
+        } else if (S.mode === 'play' && S.game) {
+          S.game.update(dt);
+          if (S.game.done && S.mode === 'play') finishStage();
+        } else if (S.mode === 'result') {
+          S.resultT -= dt;
+          if (S.resultT <= 0) {
+            if (S.lives <= 0) gameOver();
+            else nextStage();
+          }
+        }
+        /* 描画 */
+        var scale = cv.width / W;
+        ctx.setTransform(scale, 0, 0, scale, 0, 0);
+        drawStageBG(S.gt);
+        if (S.game && S.mode !== 'title') {
+          S.game.draw();
+          if (S.mode === 'play') drawTimer(S.game);
+        }
+      }
+
+      /* ================= 入力 ================= */
+      $('stageBox').addEventListener('pointerdown', function (e) {
+        if (e.target.closest('button')) return;
+        if (S.mode === 'play' || S.mode === 'intro') { e.preventDefault(); doTap(); }
+      });
+      tapBtn.addEventListener('click', function () { doTap(); });
+      $('startBtn').addEventListener('click', startRun);
+      $('retryBtn').addEventListener('click', startRun);
+      document.addEventListener('keydown', function (e) {
+        if (e.code === 'Space' || e.code === 'Enter') {
+          e.preventDefault();
+          if (S.mode === 'title' || S.mode === 'over') startRun();
+          else doTap();
+        }
+      });
+      $('muteBtn').addEventListener('click', function () {
+        muted = !muted;
+        this.textContent = muted ? '✕' : '♪';
+        this.style.opacity = muted ? 0.45 : 1;
+        if (!muted) sndTap();
+      });
+
+      fitCanvas();
+      setTimeout(fitCanvas, 60);
+      updateHUD();
+      requestAnimationFrame(frame);
+    </script>
+
+</main><footer><div class="ft-in"><div class="ft-sns"><a href="https://www.instagram.com/lurebako/" target="_blank" rel="noopener">Instagram</a><a href="https://www.threads.net/@lurebako" target="_blank" rel="noopener">Threads</a><a href="https://note.com/average_person" target="_blank" rel="noopener">note</a><a href="https://x.com/lurebako" target="_blank" rel="noopener">X</a></div><div class="ft-stamp-h">LINEスタンプ発売中</div><div class="ft-stamps"><a class="ft-stamp" href="https://line.me/S/sticker/38178363/" target="_blank" rel="noopener"><img src="/assets/stamp-bass1.png" alt="バスの言い分"><span class="st-main"><span class="st-name">バスの言い分</span><span class="st-price">¥190</span></span></a><a class="ft-stamp" href="https://line.me/S/sticker/38178436/" target="_blank" rel="noopener"><img src="/assets/stamp-bass2.png" alt="バスの言い分2"><span class="st-main"><span class="st-name">バスの言い分2</span><span class="st-price">¥190</span></span></a><a class="ft-stamp" href="https://line.me/S/sticker/38178505/" target="_blank" rel="noopener"><img src="/assets/stamp-basser.png" alt="バサーの会話"><span class="st-main"><span class="st-name">バサーの会話</span><span class="st-price">¥190</span></span></a></div><div class="f-name">ルアバコ — LUREBAKO</div>掲載価格はメーカー希望小売価格をもとにした目安です。実際の販売価格・在庫は各ショップでご確認ください。当サイトは、Amazonアソシエイト、楽天アフィリエイト、バリューコマース、メルカリアンバサダー等のアフィリエイトプログラムに参加しており、リンク経由で購入された場合に当サイトへ報酬が支払われることがあります。商品画像は楽天市場およびメーカー公式サイト等より取得しています。</div></footer><button class="to-top" id="to-top" type="button">↑ トップへ</button><script>(function(){var b=document.getElementById("to-top"),last=window.scrollY;window.addEventListener("scroll",function(){var y=window.scrollY;if(y>400&&y<last)b.classList.add("show");else b.classList.remove("show");last=y;},{passive:true});b.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"});});})();</script></body></html>
